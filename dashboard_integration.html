@@ -1,0 +1,2040 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[v7] CS 상담 통합 대시보드</title>
+  <style>
+    /* ========================================
+       전역 스타일
+       ======================================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Malgun Gothic', Arial, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1920px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* ========================================
+       헤더
+       ======================================== */
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px 30px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    /* ========================================
+       필터 영역
+       ======================================== */
+    .filter-section {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .filter-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .filter-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: flex-end;
+      margin-bottom: 12px;
+    }
+
+    .filter-controls:last-child {
+      margin-bottom: 0;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .filter-group label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #555;
+    }
+
+    .filter-group input,
+    .filter-group select {
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      min-width: 160px;
+      max-width: 250px;
+      transition: border-color 0.2s;
+    }
+
+    .filter-group input[type="text"] {
+      min-width: 200px;
+    }
+
+    .filter-group input:focus,
+    .filter-group select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .filter-group select:disabled {
+      background-color: #f5f5f5;
+      color: #999;
+      cursor: not-allowed;
+    }
+
+    .btn {
+      padding: 10px 24px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: #5568d3;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ========================================
+       탭 영역
+       ======================================== */
+    .tabs {
+      background: white;
+      padding: 10px 20px;
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .tab-btn {
+      padding: 10px 20px;
+      background: transparent;
+      border: none;
+      border-radius: 5px 5px 0 0;
+      font-size: 14px;
+      font-weight: 500;
+      color: #666;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      background: #f5f7fa;
+      color: #333;
+    }
+
+    .tab-btn.active {
+      background: #667eea;
+      color: white;
+      font-weight: 600;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .refresh-btn {
+      padding: 8px 16px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .refresh-btn:hover {
+      background: #218838;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .refresh-btn:active {
+      transform: translateY(0);
+    }
+
+    /* ========================================
+       안내 메시지 배너
+       ======================================== */
+    .info-banner {
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+      border-left: 4px solid #2196f3;
+      padding: 12px 20px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .info-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .info-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .info-text {
+      font-size: 13px;
+      color: #1565c0;
+      line-height: 1.5;
+    }
+
+    .info-text strong {
+      color: #0d47a1;
+      font-weight: 600;
+    }
+
+    /* ========================================
+       대시보드 패널
+       ======================================== */
+    .dashboard-container {
+      background: white;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .dashboard-panel {
+      display: none;
+    }
+
+    .dashboard-panel.active {
+      display: block;
+    }
+
+    .dashboard-panel iframe {
+      width: 100%;
+      height: 900px;
+      border: none;
+    }
+
+    /* ========================================
+       데이터 그리드
+       ======================================== */
+    .grid-section {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .grid-header {
+      padding: 20px;
+      border-bottom: 2px solid #f0f0f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .grid-header h2 {
+      font-size: 18px;
+      color: #333;
+    }
+
+    .grid-header h2 span {
+      color: #667eea;
+      font-weight: 700;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 40px;
+      color: #999;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1400px;
+    }
+
+    th, td {
+      padding: 14px 12px;
+      text-align: left;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13px;
+    }
+
+    th {
+      background: #fafbfc;
+      font-weight: 600;
+      color: #555;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    tbody tr {
+      transition: background 0.2s;
+    }
+
+    tbody tr:hover {
+      background: #f8f9fa;
+      cursor: pointer;
+    }
+
+    td {
+      color: #333;
+    }
+
+    td.ellipsis {
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* ========================================
+       페이지네이션
+       ======================================== */
+    .pagination {
+      text-align: center;
+      padding: 20px;
+      background: white;
+      border-top: 1px solid #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .pagination button {
+      padding: 8px 16px;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .pagination button:hover:not(:disabled) {
+      background: #f0f0f0;
+      border-color: #667eea;
+    }
+
+    .pagination button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .pagination span {
+      font-weight: 600;
+      color: #333;
+    }
+
+    /* ========================================
+       모달
+       ======================================== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* background: rgba(0,0,0,0.6); */
+      z-index: 1000;
+      animation: fadeIn 0.2s;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 900px;
+      width: 90%;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .modal-header {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      color: #333;
+      border-bottom: 2px solid #667eea;
+      padding-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-field {
+      margin-bottom: 18px;
+    }
+
+    .modal-field label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #555;
+      font-size: 14px;
+    }
+
+    .modal-field label .required {
+      color: red;
+      margin-left: 4px;
+    }
+
+    .modal-field input,
+    .modal-field textarea,
+    .modal-field select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .modal-field input:focus,
+    .modal-field textarea:focus,
+    .modal-field select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .modal-field textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .modal-field input:disabled {
+      background: #f5f5f5;
+      color: #999;
+      cursor: not-allowed;
+    }
+
+    .modal-buttons {
+      margin-top: 24px;
+      text-align: right;
+      border-top: 1px solid #eee;
+      padding-top: 20px;
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .btn-cancel {
+      background: #6c757d;
+    }
+
+    .btn-cancel:hover {
+      background: #5a6268;
+    }
+
+    /* ========================================
+       뱃지
+       ======================================== */
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge-open {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .badge-in-progress {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+
+    .badge-closed {
+      background: #e8f5e9;
+      color: #388e3c;
+    }
+
+    .badge-low {
+      background: #e8f5e9;
+      color: #388e3c;
+    }
+
+    .badge-medium {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+
+    .badge-high {
+      background: #ffebee;
+      color: #d32f2f;
+    }
+
+    .badge-urgent {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
+
+    .badge-latest {
+      background: #4caf50;
+      color: white;
+      margin-left: 8px;
+    }
+
+    /* ========================================
+       이력 버튼
+       ======================================== */
+    .history-btn {
+      padding: 6px 12px;
+      background: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .history-btn:hover {
+      background: #1976d2;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    /* ========================================
+       이력 타임라인
+       ======================================== */
+    .history-timeline {
+      padding: 10px;
+    }
+
+    .history-item {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: all 0.2s;
+    }
+
+    .history-item:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-color: #2196f3;
+    }
+
+    .history-item.latest {
+      border: 2px solid #4caf50;
+      background: #f1f8f4;
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .history-date {
+      font-size: 13px;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .history-user {
+      font-size: 13px;
+      color: #2196f3;
+      font-weight: 600;
+    }
+
+    .history-memo {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 10px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      border-radius: 4px;
+    }
+
+    .history-changes {
+      margin-top: 12px;
+      overflow-x: auto;
+    }
+
+    .history-changes-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      table-layout: fixed;
+    }
+
+    .history-changes-table th,
+    .history-changes-table td {
+      padding: 8px;
+      border: 1px solid #e0e0e0;
+      text-align: left;
+      word-wrap: break-word;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .history-changes-table th {
+      background: #f5f5f5;
+      font-weight: 600;
+    }
+
+    .history-changes-table th:first-child {
+      width: 25%;
+    }
+
+    .history-changes-table th:nth-child(2) {
+      width: 37.5%;
+    }
+
+    .history-changes-table th:nth-child(3) {
+      width: 37.5%;
+    }
+
+    /* 2컬럼 테이블 (최초 등록) */
+    .history-changes-table th:first-child:last-child {
+      width: 30%;
+    }
+
+    .old-value {
+      color: #f44336;
+      text-decoration: line-through;
+      background: #ffebee;
+    }
+
+    .new-value {
+      color: #4caf50;
+      font-weight: 600;
+      background: #e8f5e9;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      font-size: 28px;
+      color: #999;
+      cursor: pointer;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: #333;
+    }
+  </style>
+
+  <!-- Keycloak 제거: 로컬 환경에서는 Basic Auth 사용 -->
+</head>
+<body>
+  <div class="container">
+    <!-- 헤더 -->
+    <div class="header">
+      <h1>[v7] CS 상담 통합 대시보드</h1>
+      <p>주별 분석 및 일별/시간별 상담 데이터 조회 · 수정</p>
+    </div>
+
+    <!-- 탭 네비게이션 -->
+    <div class="tabs">
+      <div style="display: flex; gap: 10px;">
+        <button class="tab-btn active" onclick="switchTab('case1')">📈 주별 대시보드</button>
+        <button class="tab-btn" onclick="switchTab('case2')">📅 일별/시간별 대시보드</button>
+        <button class="tab-btn" onclick="switchTab('case3')">📋 데이터 목록</button>
+      </div>
+    </div>
+
+    <!-- Case 1: 주별 대시보드 -->
+    <div id="tab-case1" class="tab-content active">
+      <!-- 필터 영역 -->
+      <div class="filter-section">
+      <div class="filter-title">🔍 필터</div>
+
+      <!-- 날짜 필터 -->
+      <div class="filter-controls">
+        <div class="filter-group">
+          <label>시작일</label>
+          <input type="datetime-local" id="dateFrom" value="2025-12-01T00:00">
+        </div>
+        <div class="filter-group">
+          <label>종료일</label>
+          <input type="datetime-local" id="dateTo" value="2025-12-31T23:59">
+        </div>
+        <button class="btn" onclick="applyFilters()" style="padding: 10px 40px;">조회</button>
+      </div>
+    </div>
+
+      <!-- 새로고침 버튼 -->
+      <div style="text-align: right; margin-bottom: 10px;">
+        <button class="refresh-btn" onclick="refreshDashboards()" title="대시보드를 HTML 필터 기준으로 새로고침">
+          🔄 대시보드 새로고침
+        </button>
+      </div>
+
+      <!-- 안내 메시지 -->
+      <div class="info-banner">
+        <div class="info-content">
+          <span class="info-icon">ℹ️</span>
+          <span class="info-text">
+            <strong>대시보드 인터랙션 안내:</strong>
+            대시보드 내에서 차트를 클릭하거나 Time Range를 변경하면 위의 HTML 필터와 동기화되지 않습니다.
+            원래 필터 기준으로 되돌리려면 <strong>🔄 새로고침</strong> 버튼을 클릭하세요.
+          </span>
+        </div>
+      </div>
+
+      <!-- 대시보드 iframe -->
+      <div class="dashboard-container">
+        <iframe id="iframe-case1" src="" style="width: 100%; height: 900px; border: none; background: white;"></iframe>
+      </div>
+    </div>
+
+    <!-- Case 2: 일별/시간별 대시보드 -->
+    <div id="tab-case2" class="tab-content">
+      <!-- 필터 영역 -->
+      <div class="filter-section">
+        <div class="filter-title">🔍 필터</div>
+
+        <!-- 날짜 필터 -->
+        <div class="filter-controls">
+          <div class="filter-group">
+            <label>시작일</label>
+            <input type="datetime-local" id="dateFrom2" value="2025-12-01T00:00">
+          </div>
+          <div class="filter-group">
+            <label>종료일</label>
+            <input type="datetime-local" id="dateTo2" value="2025-12-31T23:59">
+          </div>
+          <button class="btn" onclick="applyFilters()" style="padding: 10px 40px;">조회</button>
+        </div>
+      </div>
+
+      <!-- 새로고침 버튼 -->
+      <div style="text-align: right; margin-bottom: 10px;">
+        <button class="refresh-btn" onclick="refreshDashboards()" title="대시보드를 HTML 필터 기준으로 새로고침">
+          🔄 대시보드 새로고침
+        </button>
+      </div>
+
+      <!-- 안내 메시지 -->
+      <div class="info-banner">
+        <div class="info-content">
+          <span class="info-icon">ℹ️</span>
+          <span class="info-text">
+            <strong>대시보드 인터랙션 안내:</strong>
+            대시보드 내에서 차트를 클릭하거나 Time Range를 변경하면 위의 HTML 필터와 동기화되지 않습니다.
+            원래 필터 기준으로 되돌리려면 <strong>🔄 새로고침</strong> 버튼을 클릭하세요.
+          </span>
+        </div>
+      </div>
+
+      <!-- 대시보드 iframe -->
+      <div class="dashboard-container">
+        <iframe id="iframe-case2" src="" style="width: 100%; height: 900px; border: none; background: white;"></iframe>
+      </div>
+    </div>
+
+    <!-- Case 3: 데이터 목록 -->
+    <div id="tab-case3" class="tab-content">
+      <!-- 필터 영역 (복제) -->
+      <div class="filter-section">
+        <div class="filter-title">🔍 필터</div>
+
+        <!-- 첫 번째 줄: 날짜 및 에이전트 -->
+        <div class="filter-controls">
+          <div class="filter-group">
+            <label>시작일</label>
+            <input type="datetime-local" id="dateFrom3" value="2025-12-01T00:00">
+          </div>
+          <div class="filter-group">
+            <label>종료일</label>
+            <input type="datetime-local" id="dateTo3" value="2025-12-31T23:59">
+          </div>
+          <div class="filter-group">
+            <label>에이전트 ID</label>
+            <select id="agentFilter3">
+              <option value="">전체</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 두 번째 줄: 카테고리 -->
+        <div class="filter-controls">
+          <div class="filter-group">
+            <label>대분류</label>
+            <select id="categoryLargeFilter3" onchange="onCategoryLargeChange3()">
+              <option value="">전체</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>중분류</label>
+            <select id="categoryMediumFilter3" onchange="onCategoryMediumChange3()" disabled>
+              <option value="">전체</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>소분류</label>
+            <select id="categorySmallFilter3" disabled>
+              <option value="">전체</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 세 번째 줄: 상태 및 우선순위 -->
+        <div class="filter-controls">
+          <div class="filter-group">
+            <label>상태</label>
+            <select id="statusFilter3">
+              <option value="">전체</option>
+              <option value="OPEN">열림</option>
+              <option value="ON_HOLD">대기중</option>
+              <option value="CLOSED">종료</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>우선순위</label>
+            <select id="priorityFilter3">
+              <option value="">전체</option>
+              <option value="LOW">낮음</option>
+              <option value="MEDIUM">보통</option>
+              <option value="HIGH">높음</option>
+              <option value="URGENT">긴급</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 네 번째 줄: 키워드 검색 -->
+        <div class="filter-controls">
+          <div class="filter-group" style="flex: 1;">
+            <label>사용자 요약 키워드</label>
+            <input type="text" id="userSummaryFilter3" placeholder="검색어 입력">
+          </div>
+          <div class="filter-group" style="flex: 1;">
+            <label>어시스턴트 요약 키워드</label>
+            <input type="text" id="assistantSummaryFilter3" placeholder="검색어 입력">
+          </div>
+        </div>
+
+        <!-- 다섯 번째 줄: 조회 버튼 -->
+        <div class="filter-controls">
+          <button class="btn" onclick="applyFilters()" style="padding: 10px 40px;">조회</button>
+        </div>
+      </div>
+
+      <!-- 데이터 그리드 -->
+      <div class="grid-section">
+      <div class="grid-header">
+        <h2>데이터 목록 (<span id="totalCount">0</span>건)</h2>
+      </div>
+
+      <div class="loading" id="loadingIndicator">데이터를 불러오는 중...</div>
+
+      <div class="table-wrapper">
+        <table id="dataGrid">
+          <thead>
+            <tr>
+              <th>타임스탬프</th>
+              <th>세션 ID</th>
+              <th>대분류</th>
+              <th>중분류</th>
+              <th>소분류</th>
+              <th>사용자 요약</th>
+              <th>어시스턴트 요약</th>
+              <th>상태</th>
+              <th>우선순위</th>
+              <th>이력</th>
+            </tr>
+          </thead>
+          <tbody id="gridBody">
+            <!-- 동적 렌더링 -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <button onclick="prevPage()" id="prevBtn">&lt; 이전</button>
+        <span id="pageInfo">1 / 1</span>
+        <button onclick="nextPage()" id="nextBtn">다음 &gt;</button>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <!-- 수정 모달 -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">데이터 수정</div>
+
+      <div class="modal-field">
+        <label>세션 ID</label>
+        <input type="text" id="modal_session_id" disabled>
+      </div>
+
+      <div class="modal-field">
+        <label>사용자 요약 (user_summary)</label>
+        <textarea id="modal_user_summary"></textarea>
+      </div>
+
+      <div class="modal-field">
+        <label>어시스턴트 요약 (assistant_summary)</label>
+        <textarea id="modal_assistant_summary"></textarea>
+      </div>
+
+      <div class="modal-field">
+        <label>대분류 코드 (category_code)</label>
+        <input type="text" id="modal_category_code" placeholder="예: A-01">
+      </div>
+
+      <div class="modal-field">
+        <label>대분류 (category_large)</label>
+        <input type="text" id="modal_category_large" placeholder="예: A">
+      </div>
+
+      <div class="modal-field">
+        <label>중분류 (category_medium)</label>
+        <input type="text" id="modal_category_medium" placeholder="예: 01">
+      </div>
+
+      <div class="modal-field">
+        <label>소분류 (category_small)</label>
+        <input type="text" id="modal_category_small" placeholder="선택사항">
+      </div>
+
+      <div class="modal-field">
+        <label>지원 상태 (support_status)</label>
+        <select id="modal_support_status">
+          <option value="OPEN">OPEN</option>
+          <option value="IN_PROGRESS">IN_PROGRESS</option>
+          <option value="CLOSED">CLOSED</option>
+        </select>
+      </div>
+
+      <div class="modal-field">
+        <label>우선순위 (support_priority)</label>
+        <select id="modal_support_priority">
+          <option value="LOW">LOW</option>
+          <option value="MEDIUM">MEDIUM</option>
+          <option value="HIGH">HIGH</option>
+          <option value="URGENT">URGENT</option>
+        </select>
+      </div>
+
+      <div class="modal-field">
+        <label>수정 사유<span class="required">*</span></label>
+        <textarea id="modal_memo" placeholder="수정 사유를 입력해주세요" required></textarea>
+      </div>
+
+      <div class="modal-buttons">
+        <button class="btn btn-cancel" onclick="closeModal()">취소</button>
+        <button class="btn" onclick="saveChanges()">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 이력 모달 -->
+  <div id="historyModal" class="modal">
+    <div class="modal-content" style="max-width: 800px;">
+      <div class="modal-header">
+        수정 이력
+        <button class="modal-close" onclick="closeHistoryModal()">&times;</button>
+      </div>
+
+      <div id="historyContent" style="max-height: 500px; overflow-y: auto;">
+        <!-- 동적 렌더링 -->
+      </div>
+
+      <div class="modal-buttons">
+        <button class="btn btn-cancel" onclick="closeHistoryModal()">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ====================================================================
+    // 설정 (로컬 환경 - Basic Auth)
+    // ====================================================================
+    const OPENSEARCH_URL = 'https://opensearch-stage.hecto.co.kr';
+    const DASHBOARD_URL = 'http://localhost:5601';
+    const INDEX_PATTERN = 'agent_dashboard_stage_30573970fd8d4701b23f7727b73aa099';
+    const TENANT = '30573970fd8d4701b23f7727b73aa099-stage';  // 테넌트 (필요시 수정)
+
+    // Basic Auth 설정
+    const USE_BASIC_AUTH = true;  // 로컬은 Basic Auth 사용
+    const OPENSEARCH_BASIC_USER = 'admin';
+    const OPENSEARCH_BASIC_PASS = 'admin';
+
+    const DASHBOARD_IDS = {
+      case1: 'v7_cs_summary_weekly_dashboard',
+      case2: 'v7_cs_daily_hourly_dashboard'
+    };
+
+    // 카테고리 계층 구조 (CSV 데이터 기반)
+    const CATEGORY_HIERARCHY = {
+      "A": { name: "회원", medium: { "10": { name: "가입/탈퇴", small: {"1": "회원 가입", "2": "회원 탈퇴"} }, "20": { name: "로그인/로그아웃", small: {} }, "30": { name: "개인정보변경", small: {} }, "40": { name: "마케팅 수신 설정", small: {} }, "99": { name: "기타 회원 관련", small: {} } } },
+      "B": { name: "제품", medium: { "10": { name: "제품 기본 정보", small: {"1": "제품 기본 정보", "2": "제품 성분", "3": "제품 함량/용량", "4": "제품 기능/효과", "5": "제품 유통 기한", "6": "제품 보관 방법", "7": "제품 제형", "99": "기타 제품 정보 관련"} }, "20": { name: "섭취 안내", small: {"1": "제품 섭취 대상(섭취 전)", "2": "제품 섭취 방법", "3": "제품 알레르기/주의사항(섭취 전)", "99": "기타 섭취 관련"} }, "30": { name: "섭취 후 증상/반응", small: {"1": "소화기 증상", "99": "기타 섭취 후 반응"} }, "40": { name: "상품 추천/비교", small: {"1": "연령별 상품 추천", "2": "증상별 상품 추천", "3": "목적별 상품 추천", "4": "성분별 상품 추천", "50": "상품 비교", "99": "기타 추천 관련"} }, "99": { name: "기타 제품 관련", small: {} } } },
+      "C": { name: "제품 불량/품질 이슈", medium: { "10": { name: "제품 품질 이상(변질)", small: {} }, "20": { name: "제품 내 이물질", small: {} }, "30": { name: "제품 제조 불량", small: {} }, "99": { name: "기타 제품 불량/품질 이슈", small: {} } } },
+      "D": { name: "구매", medium: { "10": { name: "온라인/오프라인 구매", small: {} }, "20": { name: "재고/품절", small: {} }, "99": { name: "기타 구매 관련", small: {} } } },
+      "E": { name: "결제", medium: { "10": { name: "결제 수단 변경", small: {} }, "20": { name: "지출 증빙", small: {} }, "30": { name: "일반 결제 오류", small: {} }, "99": { name: "기타 일반 결제 관련", small: {} } } },
+      "F": { name: "주문 관리", medium: { "10": { name: "주문 조회", small: {} }, "20": { name: "주문 취소(결제 전)", small: {} }, "30": { name: "결제 취소(결제 후, 배송 전)", small: {} }, "40": { name: "반품/교환(배송 완료 후)", small: {} }, "99": { name: "기타 주문 관련", small: {} } } },
+      "G": { name: "일반 배송", medium: { "10": { name: "배송 정책", small: {} }, "20": { name: "배송 조회/추적", small: {} }, "30": { name: "배송 주소/메시지 변경", small: {} }, "40": { name: "배송 지연", small: {} }, "50": { name: "배송 파손/손상(배송 중 원인 관련)", small: {} }, "60": { name: "배송 누락", small: {} }, "99": { name: "기타 배송 관련", small: {} } } },
+      "H": { name: "정기 구독(또박배송)", medium: { "10": { name: "구독 혜택/신청", small: {"1": "구독 혜택", "2": "구독 신청", "99": "기타 구독 혜택/신청 관련"} }, "20": { name: "구독 정책", small: {} }, "30": { name: "구독 변경", small: {"1": "구독 건너뛰기", "2": "구독 상품 변경", "99": "기타 구독 변경 관련"} }, "40": { name: "구독 결제", small: {"1": "구독 결제 수단 변경", "2": "구독 결제일 변경", "3": "구독 결제 취소", "4": "구독 결제 오류", "99": "기타 구독 결제 관련"} }, "50": { name: "구독 배송", small: {"1": "구독 배송 정책", "2": "구독 배송 조회/추적", "3": "구독 배송 주소/메시지 변경", "4": "구독 배송 지연", "5": "구독 배송 파손/손상(배송 중 원인 관련)", "6": "구독 배송 누락", "7": "합 배송 관련", "99": "기타 구독 배송 관련"} }, "90": { name: "구독 해지", small: {"1": "구독 해지 정책", "2": "구독 해지 위약금", "99": "기타 구독 해지 관련 문의"} }, "99": { name: "기타 정기 구독 관련", small: {} } } },
+      "I": { name: "멤버십/리워드 혜택", medium: { "10": { name: "가입 혜택(가입 전)", small: {} }, "20": { name: "멤버십 혜택(가입 후)", small: {} }, "30": { name: "포인트/적립금", small: {} }, "40": { name: "쿠폰", small: {} }, "50": { name: "포인트 교환/응모", small: {} }, "99": { name: "기타 멤버십/혜택 관련", small: {} } } },
+      "J": { name: "이벤트(프로모션)/사은품", medium: { "10": { name: "이벤트/프로모션 문의", small: {} }, "20": { name: "사은품 문의", small: {} }, "99": { name: "기타 이벤트/프로모션/사은품 관련", small: {} } } },
+      "K": { name: "홈페이지/앱", medium: { "10": { name: "서비스 기능", small: {"1": "섭취 알림 기능(앱)", "2": "영양제 분석/설계 기능(앱)", "3": "포인트 교환소 기능(앱)", "4": "구매 후기/리뷰", "5": "AI챗봇", "99": "기타 서비스 기능"} }, "20": { name: "정책/약관", small: {} }, "99": { name: "기타 홈페이지 웹/앱 관련", small: {} } } },
+      "L": { name: "시스템 오류", medium: { "99": { name: "기타 시스템 오류/버그 관련", small: {} } } },
+      "M": { name: "피드백/제안", medium: { "10": { name: "개선 의견", small: {} }, "20": { name: "불만", small: {} }, "30": { name: "칭찬", small: {} }, "99": { name: "기타 피드백/제안 관련", small: {} } } },
+      "N": { name: "고객센터", medium: { "10": { name: "상담 요청/취소", small: {} }, "99": { name: "기타 고객센터 관련", small: {} } } },
+      "O": { name: "B2B/제휴", medium: { "10": { name: "약국", small: {} }, "20": { name: "기업/단체", small: {} }, "30": { name: "제휴/협찬", small: {} }, "99": { name: "기타 B2B 관련", small: {} } } },
+      "Z": { name: "기타", medium: { "99": { name: "기타 미분류", small: {} } } }
+    };
+
+    // ====================================================================
+    // 전역 변수
+    // ====================================================================
+    let currentData = [];
+    let selectedDoc = null;
+    let currentPage = 0;
+    const pageSize = 20;
+    let totalCount = 0;
+    let currentTab = 'case1';
+
+    // 탭별 로드 상태 추적 (최초 클릭 시에만 조회)
+    const tabLoaded = {
+      case1: false,
+      case2: false,
+      case3: false
+    };
+
+    // ====================================================================
+    // 하드코딩된 샘플 데이터 (CORS 문제 회피용)
+    // ====================================================================
+    const MOCK_DATA = [
+      {
+        "_id": "kTfHRZwB49yqHgXDilNq",
+        "_source": {
+          "@timestamp": "2026-02-03T14:28:22.049Z",
+          "agent_id": "4ede8d78a06449a3a21f6ce616207e9e",
+          "agent_name": "🟪[HH][드시모네몰] 고객 질의답변 에이전트 (v1.1.4)",
+          "session_id": "417787f5ca334a13b402a3cc8f285e16",
+          "dashboard": {
+            "support_priority_keyword": "LOW",
+            "category_large_code_keyword": "A",
+            "category_medium_code_keyword": "99",
+            "category_small_code_keyword": null,
+            "category_code_keyword": "A-99",
+            "category_large_name_keyword": "회원",
+            "category_medium_name_keyword": "기타 회원 관련",
+            "category_small_name_keyword": null,
+            "user_summary_search": "몇 년 전 가입해 구입한 이력 관련 내용 언급 (구체 문의 내용 불명확)!",
+            "assistant_summary_search": "과거 이력 등은 챗봇에서 바로 안내 불가하며 평일 8시~17시 고객센터(☎1688-8211)로 문의하라는 안내",
+            "support_status_keyword": "OPEN",
+            "memo_hist": [
+              {
+                "before": null,
+                "memo": "ai 최초등록",
+                "created_at": "2026-02-10T04:20:30Z",
+                "after": {
+                  "assistant_summary": "과거 이력 등은 챗봇에서 바로 안내 불가하며 평일 8시~17시 고객센터(☎1688-8211)로 문의하라는 안내",
+                  "support_status": "NEW",
+                  "user_summary": "몇 년 전 가입해 구입한 이력 관련 내용 언급 (구체 문의 내용 불명확)",
+                  "category_code": "A-99",
+                  "support_priority": "",
+                  "category_large": "A",
+                  "category_medium": "99",
+                  "category_small": null
+                },
+                "created_by": "AI_SYSTEM"
+              },
+              {
+                "before": {
+                  "support_status": "NEW",
+                  "support_priority": "",
+                  "user_summary_search": "몇 년 전 가입해 구입한 이력 관련 내용 언급 (구체 문의 내용 불명확)"
+                },
+                "memo": "사용자 요청 내용을 수정함!",
+                "created_at": "2026-02-11T01:17:28.574Z",
+                "after": {
+                  "support_status": "OPEN",
+                  "support_priority": "LOW",
+                  "user_summary_search": "몇 년 전 가입해 구입한 이력 관련 내용 언급 (구체 문의 내용 불명확)!"
+                },
+                "created_by": "mjk@hecto.co.kr"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "_id": "kjfIRZwB49yqHgXDDlQR",
+        "_source": {
+          "@timestamp": "2026-02-03T12:59:56.524Z",
+          "agent_id": "4ede8d78a06449a3a21f6ce616207e9e",
+          "agent_name": "🟪[HH][드시모네몰] 고객 질의답변 에이전트 (v1.1.4)",
+          "session_id": "b9f7c025d09f48549bb26615c56d257e",
+          "dashboard": {
+            "support_priority_keyword": "",
+            "category_large_code_keyword": "B",
+            "category_medium_code_keyword": "40",
+            "category_small_code_keyword": "2",
+            "category_code_keyword": "B-40-2",
+            "category_large_name_keyword": "제품",
+            "category_medium_name_keyword": "상품 추천/비교",
+            "category_small_name_keyword": "증상별 상품 추천",
+            "user_summary_search": "성인 눈영양제 구입 문의",
+            "assistant_summary_search": "또박케어LAB 루테인 비타민A를 성인 눈 건강용 제품으로 안내하며 루테인 20mg, 아스타잔틴 4mg, 비타민A 700μgRAE, 60캡슐/2개월분, 가격 38,000원과 기능·섭취 대상·주의사항 및 드시모네몰 구매 가능 여부 안내",
+            "support_status_keyword": "NEW"
+          }
+        }
+      },
+      {
+        "_id": "ojfGRZwB49yqHgXDYFEs",
+        "_source": {
+          "@timestamp": "2026-02-03T12:58:35.049Z",
+          "agent_id": "4ede8d78a06449a3a21f6ce616207e9e",
+          "agent_name": "🟪[HH][드시모네몰] 고객 질의답변 에이전트 (v1.1.4)",
+          "session_id": "cf1094e345ad435b945ad626262c4819",
+          "dashboard": {
+            "support_priority_keyword": "",
+            "category_large_code_keyword": "B",
+            "category_medium_code_keyword": "10",
+            "category_small_code_keyword": "2",
+            "category_code_keyword": "B-10-2",
+            "category_large_name_keyword": "제품",
+            "category_medium_name_keyword": "제품 기본 정보",
+            "category_small_name_keyword": "제품 성분",
+            "user_summary_search": "루테인 지아잔틴 성분이 제품에서 없어졌는지 문의하고, 해당 루테인 제품 구매 및 판매 페이지 연결 요청",
+            "assistant_summary_search": "또박케어LAB 루테인 비타민A 제품이 판매 중이며 루테인 20mg, 비타민A 700μgRAE, 아스타잔틴 4mg 등이 함유된 건강기능식품이라고 안내하고, 드시모네몰에서 구매 가능하며 가격 38,000원, 1일 1정, 60캡슐(2개월분) 구성 및 섭취 대상·주의사항 안내",
+            "support_status_keyword": "NEW"
+          }
+        }
+      }
+    ];
+
+    // ====================================================================
+    // Keycloak 제거: 로컬 환경에서는 Basic Auth만 사용
+    // ====================================================================
+
+    // ====================================================================
+    // 초기화
+    // ====================================================================
+    function init() {
+      // 에이전트 및 카테고리 옵션 로드
+      loadFilterOptions();
+
+      // 초기 탭(case1)을 로드된 것으로 표시하고 iframe 설정
+      tabLoaded.case1 = true;
+      updateDashboardUrls();
+    }
+
+    // ====================================================================
+    // Dashboard URL 업데이트
+    // ====================================================================
+    function updateDashboardUrls() {
+      // case1 탭
+      if (currentTab === 'case1') {
+        const dateFrom = document.getElementById('dateFrom').value;
+        const dateTo = document.getElementById('dateTo').value;
+        const timeParam = `_g=(time:(from:'${dateFrom}',to:'${dateTo}'))`;
+        const case1Url = `${DASHBOARD_URL}/app/dashboards#/view/${DASHBOARD_IDS.case1}?embed=true&${timeParam}`;
+        const iframe1 = document.getElementById('iframe-case1');
+        if (iframe1.src !== case1Url) {
+          iframe1.src = case1Url;
+        }
+      }
+      // case2 탭
+      else if (currentTab === 'case2') {
+        const dateFrom = document.getElementById('dateFrom2').value;
+        const dateTo = document.getElementById('dateTo2').value;
+        const timeParam = `_g=(time:(from:'${dateFrom}',to:'${dateTo}'))`;
+        const case2Url = `${DASHBOARD_URL}/app/dashboards#/view/${DASHBOARD_IDS.case2}?embed=true&${timeParam}`;
+        const iframe2 = document.getElementById('iframe-case2');
+        if (iframe2.src !== case2Url) {
+          iframe2.src = case2Url;
+        }
+      }
+    }
+
+    // ====================================================================
+    // 필터 옵션 로드
+    // ====================================================================
+    async function loadFilterOptions() {
+      // 대분류 목록 먼저 로드 (API 호출 불필요, 하드코딩된 데이터)
+      const categoryLargeSelect3 = document.getElementById('categoryLargeFilter3');
+      if (categoryLargeSelect3) {
+        console.log('[loadFilterOptions] case3 대분류 옵션 추가 중...');
+        Object.keys(CATEGORY_HIERARCHY).sort().forEach(code => {
+          const option = document.createElement('option');
+          option.value = code;
+          option.textContent = `${code} - ${CATEGORY_HIERARCHY[code].name}`;
+          categoryLargeSelect3.appendChild(option);
+        });
+        console.log('[loadFilterOptions] case3 대분류 옵션 추가 완료. 총', Object.keys(CATEGORY_HIERARCHY).length, '개');
+      } else {
+        console.error('[loadFilterOptions] categoryLargeFilter3 요소를 찾을 수 없습니다!');
+      }
+
+      // 에이전트 ID 목록 (하드코딩된 데이터 사용)
+      try {
+        // MOCK_DATA에서 고유한 agent_id 추출
+        const uniqueAgents = [...new Set(MOCK_DATA.map(doc => doc._source.agent_id))];
+
+        const agentSelect3 = document.getElementById('agentFilter3');
+        if (agentSelect3) {
+          uniqueAgents.forEach(agentId => {
+            const option = document.createElement('option');
+            option.value = agentId;
+            option.textContent = agentId;
+            agentSelect3.appendChild(option);
+          });
+          console.log('[loadFilterOptions] 에이전트 옵션 추가 완료:', uniqueAgents.length, '개');
+        }
+      } catch (error) {
+        console.error('에이전트 필터 옵션 로드 오류:', error);
+      }
+    }
+
+    // ====================================================================
+    // 대분류 변경 시 중분류 필터링
+    // ====================================================================
+    function onCategoryLargeChange() {
+      const largeCode = document.getElementById('categoryLargeFilter').value;
+      const mediumSelect = document.getElementById('categoryMediumFilter');
+      const smallSelect = document.getElementById('categorySmallFilter');
+
+      // 중분류/소분류 초기화
+      mediumSelect.innerHTML = '<option value="">전체</option>';
+      smallSelect.innerHTML = '<option value="">전체</option>';
+      smallSelect.disabled = true;
+
+      if (!largeCode) {
+        mediumSelect.disabled = true;
+        return;
+      }
+
+      // 중분류 옵션 추가
+      mediumSelect.disabled = false;
+      const mediumData = CATEGORY_HIERARCHY[largeCode].medium;
+      Object.keys(mediumData).sort().forEach(code => {
+        const option = document.createElement('option');
+        option.value = code;
+        option.textContent = `${code} - ${mediumData[code].name}`;
+        mediumSelect.appendChild(option);
+      });
+    }
+
+    // ====================================================================
+    // 중분류 변경 시 소분류 필터링
+    // ====================================================================
+    function onCategoryMediumChange() {
+      const largeCode = document.getElementById('categoryLargeFilter').value;
+      const mediumCode = document.getElementById('categoryMediumFilter').value;
+      const smallSelect = document.getElementById('categorySmallFilter');
+
+      // 소분류 초기화
+      smallSelect.innerHTML = '<option value="">전체</option>';
+      smallSelect.disabled = true;
+
+      if (!largeCode || !mediumCode) {
+        return;
+      }
+
+      // 소분류 옵션 추가
+      const smallData = CATEGORY_HIERARCHY[largeCode].medium[mediumCode].small;
+      if (Object.keys(smallData).length > 0) {
+        smallSelect.disabled = false;
+        Object.keys(smallData).sort().forEach(code => {
+          const option = document.createElement('option');
+          option.value = code;
+          option.textContent = `${code} - ${smallData[code]}`;
+          smallSelect.appendChild(option);
+        });
+      }
+    }
+
+    // Case2용 카테고리 변경
+    function onCategoryLargeChange2() {
+      const largeCode = document.getElementById('categoryLargeFilter2').value;
+      const mediumSelect = document.getElementById('categoryMediumFilter2');
+      const smallSelect = document.getElementById('categorySmallFilter2');
+      mediumSelect.innerHTML = '<option value="">전체</option>';
+      smallSelect.innerHTML = '<option value="">전체</option>';
+      smallSelect.disabled = true;
+      if (!largeCode) {
+        mediumSelect.disabled = true;
+        return;
+      }
+      mediumSelect.disabled = false;
+      const mediumData = CATEGORY_HIERARCHY[largeCode].medium;
+      Object.keys(mediumData).sort().forEach(code => {
+        const option = document.createElement('option');
+        option.value = code;
+        option.textContent = `${code} - ${mediumData[code].name}`;
+        mediumSelect.appendChild(option);
+      });
+    }
+
+    function onCategoryMediumChange2() {
+      const largeCode = document.getElementById('categoryLargeFilter2').value;
+      const mediumCode = document.getElementById('categoryMediumFilter2').value;
+      const smallSelect = document.getElementById('categorySmallFilter2');
+      smallSelect.innerHTML = '<option value="">전체</option>';
+      smallSelect.disabled = true;
+      if (!largeCode || !mediumCode) return;
+      const smallData = CATEGORY_HIERARCHY[largeCode].medium[mediumCode].small;
+      if (Object.keys(smallData).length > 0) {
+        smallSelect.disabled = false;
+        Object.keys(smallData).sort().forEach(code => {
+          const option = document.createElement('option');
+          option.value = code;
+          option.textContent = `${code} - ${smallData[code]}`;
+          smallSelect.appendChild(option);
+        });
+      }
+    }
+
+    // Case3용 카테고리 변경
+    function onCategoryLargeChange3() {
+      console.log('[Case3] onCategoryLargeChange3 호출됨');
+      const largeCode = document.getElementById('categoryLargeFilter3').value;
+      console.log('[Case3] 선택된 대분류:', largeCode);
+      const mediumSelect = document.getElementById('categoryMediumFilter3');
+      const smallSelect = document.getElementById('categorySmallFilter3');
+      mediumSelect.innerHTML = '<option value="">전체</option>';
+      smallSelect.innerHTML = '<option value="">전체</option>';
+      smallSelect.disabled = true;
+      if (!largeCode) {
+        mediumSelect.disabled = true;
+        console.log('[Case3] 대분류 선택 안됨 - 중분류 비활성화');
+        return;
+      }
+      mediumSelect.disabled = false;
+      const mediumData = CATEGORY_HIERARCHY[largeCode].medium;
+      console.log('[Case3] mediumData keys:', Object.keys(mediumData));
+      Object.keys(mediumData).sort().forEach(code => {
+        const option = document.createElement('option');
+        option.value = code;
+        option.textContent = `${code} - ${mediumData[code].name}`;
+        mediumSelect.appendChild(option);
+      });
+      console.log('[Case3] 중분류 활성화 완료');
+    }
+
+    function onCategoryMediumChange3() {
+      console.log('[Case3] onCategoryMediumChange3 호출됨');
+      const largeCode = document.getElementById('categoryLargeFilter3').value;
+      const mediumCode = document.getElementById('categoryMediumFilter3').value;
+      console.log('[Case3] 대분류:', largeCode, '중분류:', mediumCode);
+      const smallSelect = document.getElementById('categorySmallFilter3');
+      smallSelect.innerHTML = '<option value="">전체</option>';
+      smallSelect.disabled = true;
+      if (!largeCode || !mediumCode) {
+        console.log('[Case3] 대분류 또는 중분류 선택 안됨');
+        return;
+      }
+      const smallData = CATEGORY_HIERARCHY[largeCode].medium[mediumCode].small;
+      console.log('[Case3] smallData keys:', Object.keys(smallData));
+      if (Object.keys(smallData).length > 0) {
+        smallSelect.disabled = false;
+        Object.keys(smallData).sort().forEach(code => {
+          const option = document.createElement('option');
+          option.value = code;
+          option.textContent = `${code} - ${smallData[code]}`;
+          smallSelect.appendChild(option);
+        });
+        console.log('[Case3] 소분류 활성화 완료');
+      } else {
+        console.log('[Case3] 소분류 데이터 없음');
+      }
+    }
+
+    // ====================================================================
+    // 탭 전환
+    // ====================================================================
+    function switchTab(tab) {
+      currentTab = tab;
+
+      // 탭 버튼 활성화
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+
+      // 탭 콘텐츠 표시
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      document.getElementById(`tab-${tab}`).classList.add('active');
+
+      // 최초 로드인 경우에만 데이터 조회
+      if (!tabLoaded[tab]) {
+        tabLoaded[tab] = true;
+
+        if (tab === 'case1' || tab === 'case2') {
+          // 대시보드 탭: iframe URL 설정
+          updateDashboardUrls();
+        } else if (tab === 'case3') {
+          // 데이터 목록 탭: 데이터 조회
+          fetchData();
+        }
+      }
+    }
+
+    // ====================================================================
+    // 대시보드 iframe 새로고침
+    // ====================================================================
+    function refreshDashboards(refreshAll = false) {
+      // refreshAll이 true이면 모든 대시보드 새로고침 (case3에서 저장 시)
+      if (refreshAll) {
+        ['case1', 'case2'].forEach(tab => {
+          refreshSingleDashboard(tab);
+        });
+        return;
+      }
+
+      // case3(데이터 목록)은 iframe이 없으므로 제외
+      if (currentTab === 'case3') {
+        return;
+      }
+
+      // 현재 활성화된 탭의 iframe만 새로고침
+      refreshSingleDashboard(currentTab);
+    }
+
+    // 단일 대시보드 새로고침
+    function refreshSingleDashboard(tab) {
+      const frame = document.getElementById(`iframe-${tab}`);
+      if (!frame) return;
+
+      // 현재 탭의 필터 값으로 URL 재생성 (강제 새로고침)
+      const suffix = tab === 'case1' ? '' : '2';
+      const dateFrom = document.getElementById('dateFrom' + suffix).value;
+      const dateTo = document.getElementById('dateTo' + suffix).value;
+      const timestamp = new Date().getTime();
+
+      const timeParam = `_g=(time:(from:'${dateFrom}',to:'${dateTo}'))`;
+      const newUrl = `${DASHBOARD_URL}/app/dashboards#/view/${DASHBOARD_IDS[tab]}?embed=true&${timeParam}&_t=${timestamp}`;
+
+      // 항상 강제 리로드: 빈 문자열로 초기화 후 다시 설정
+      frame.src = '';
+      setTimeout(() => {
+        frame.src = newUrl;
+      }, 50);
+    }
+
+    // ====================================================================
+    // 필터 적용
+    // ====================================================================
+    function applyFilters() {
+      currentPage = 0;
+      updateDashboardUrls();
+      if (currentTab === 'case3') {
+        fetchData();
+      }
+    }
+
+    // ====================================================================
+    // 데이터 조회
+    // ====================================================================
+    async function fetchData() {
+      // 현재 탭에 맞는 필터 ID suffix
+      const suffix = currentTab === 'case1' ? '' : currentTab === 'case2' ? '2' : '3';
+
+      const dateFrom = document.getElementById('dateFrom' + suffix).value + ':00';
+      const dateTo = document.getElementById('dateTo' + suffix).value + ':59';
+      const agentId = document.getElementById('agentFilter' + suffix).value;
+      const categoryLarge = document.getElementById('categoryLargeFilter' + suffix).value;
+      const categoryMedium = document.getElementById('categoryMediumFilter' + suffix).value;
+      const categorySmall = document.getElementById('categorySmallFilter' + suffix).value;
+      const status = document.getElementById('statusFilter' + suffix).value;
+      const priority = document.getElementById('priorityFilter' + suffix).value;
+      const userSummaryKeyword = document.getElementById('userSummaryFilter' + suffix).value.trim();
+      const assistantSummaryKeyword = document.getElementById('assistantSummaryFilter' + suffix).value.trim();
+
+      const mustClauses = [
+        {
+          range: {
+            '@timestamp': {
+              gte: dateFrom,
+              lte: dateTo,
+              time_zone: 'Asia/Seoul'
+            }
+          }
+        },
+        {
+          match_phrase: {
+            'dashboard.is_generated': true
+          }
+        }
+      ];
+
+      if (agentId) {
+        mustClauses.push({ term: { 'agent_id': agentId } });
+      }
+
+      if (categoryLarge) {
+        mustClauses.push({ term: { 'dashboard.category_large_keyword': categoryLarge } });
+      }
+
+      if (categoryMedium) {
+        mustClauses.push({ term: { 'dashboard.category_medium_keyword': categoryMedium } });
+      }
+
+      if (categorySmall) {
+        mustClauses.push({ term: { 'dashboard.category_small_keyword': categorySmall } });
+      }
+
+      if (status) {
+        mustClauses.push({ term: { 'dashboard.support_status_keyword': status } });
+      }
+
+      if (priority) {
+        mustClauses.push({ term: { 'dashboard.support_priority_keyword': priority } });
+      }
+
+      if (userSummaryKeyword) {
+        mustClauses.push({
+          match: {
+            'dashboard.user_summary_keyword': {
+              query: userSummaryKeyword,
+              operator: 'and'
+            }
+          }
+        });
+      }
+
+      if (assistantSummaryKeyword) {
+        mustClauses.push({
+          match: {
+            'dashboard.assistant_summary_keyword': {
+              query: assistantSummaryKeyword,
+              operator: 'and'
+            }
+          }
+        });
+      }
+
+      const query = {
+        query: { bool: { must: mustClauses } },
+        sort: [{ '@timestamp': { order: 'desc' } }],
+        from: currentPage * pageSize,
+        size: pageSize
+      };
+
+      try {
+        showLoading(true);
+
+        // ========================================
+        // MOCK_DATA 사용 (CORS 문제 회피)
+        // ========================================
+        console.log('[fetchData] 하드코딩된 MOCK_DATA 사용 (총 3건)');
+
+        // 필터 적용 (간단한 필터링)
+        let filteredData = MOCK_DATA.filter(item => {
+          const source = item._source;
+          const dashboard = source.dashboard || {};
+
+          // 에이전트 ID 필터
+          if (agentId && source.agent_id !== agentId) return false;
+
+          // 카테고리 필터
+          if (categoryLarge && dashboard.category_large_code_keyword !== categoryLarge) return false;
+          if (categoryMedium && dashboard.category_medium_code_keyword !== categoryMedium) return false;
+          if (categorySmall && dashboard.category_small_code_keyword !== categorySmall) return false;
+
+          // 상태 필터
+          if (status && dashboard.support_status_keyword !== status) return false;
+
+          // 우선순위 필터
+          if (priority && dashboard.support_priority_keyword !== priority) return false;
+
+          // 검색 키워드 필터
+          if (userSummaryKeyword && !dashboard.user_summary_search?.includes(userSummaryKeyword)) return false;
+          if (assistantSummaryKeyword && !dashboard.assistant_summary_search?.includes(assistantSummaryKeyword)) return false;
+
+          return true;
+        });
+
+        // 페이지네이션 적용
+        const from = currentPage * pageSize;
+        const paginatedData = filteredData.slice(from, from + pageSize);
+
+        currentData = paginatedData;
+        totalCount = filteredData.length;
+
+        console.log(`[fetchData] 필터링 후: ${totalCount}건, 현재 페이지: ${paginatedData.length}건`);
+
+        renderGrid(currentData);
+        updatePagination(totalCount);
+      } catch (error) {
+        console.error('조회 오류:', error);
+        alert(`데이터 조회에 실패했습니다.\n\n오류: ${error.message}`);
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    // ====================================================================
+    // Grid 렌더링
+    // ====================================================================
+    function renderGrid(data) {
+      const tbody = document.getElementById('gridBody');
+      tbody.innerHTML = '';
+
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 50px; color: #999;">조회된 데이터가 없습니다.</td></tr>';
+        document.getElementById('totalCount').textContent = '0';
+        return;
+      }
+
+      data.forEach((item, index) => {
+        const source = item._source;
+        const dashboard = source.dashboard || {};
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+          <td onclick="openModalByIndex(${index})">${formatDateTime(source['@timestamp'])}</td>
+          <td onclick="openModalByIndex(${index})">${source.session_id || '-'}</td>
+          <td onclick="openModalByIndex(${index})">${dashboard.category_large_code_keyword || '-'}</td>
+          <td onclick="openModalByIndex(${index})">${dashboard.category_medium_code_keyword || '-'}</td>
+          <td onclick="openModalByIndex(${index})">${dashboard.category_small_code_keyword || '-'}</td>
+          <td onclick="openModalByIndex(${index})" class="ellipsis" title="${dashboard.user_summary_search || ''}">${dashboard.user_summary_search || '-'}</td>
+          <td onclick="openModalByIndex(${index})" class="ellipsis" title="${dashboard.assistant_summary_search || ''}">${dashboard.assistant_summary_search || '-'}</td>
+          <td onclick="openModalByIndex(${index})">${renderStatusBadge(dashboard.support_status_keyword)}</td>
+          <td onclick="openModalByIndex(${index})">${renderPriorityBadge(dashboard.support_priority_keyword)}</td>
+          <td>${renderHistoryButton(dashboard.memo_hist || [], index)}</td>
+        `;
+
+        tbody.appendChild(row);
+      });
+
+      document.getElementById('totalCount').textContent = totalCount.toLocaleString();
+    }
+
+    // ====================================================================
+    // 뱃지 렌더링
+    // ====================================================================
+    function renderStatusBadge(status) {
+      if (!status) return '-';
+      const badgeClass = status === 'OPEN' ? 'badge-open' :
+                         status === 'IN_PROGRESS' ? 'badge-in-progress' :
+                         status === 'CLOSED' ? 'badge-closed' : '';
+      return `<span class="badge ${badgeClass}">${status}</span>`;
+    }
+
+    function renderPriorityBadge(priority) {
+      if (!priority) return '-';
+      const badgeClass = priority === 'LOW' ? 'badge-low' :
+                         priority === 'MEDIUM' ? 'badge-medium' :
+                         priority === 'HIGH' ? 'badge-high' :
+                         priority === 'URGENT' ? 'badge-urgent' : '';
+      return `<span class="badge ${badgeClass}">${priority}</span>`;
+    }
+
+    function renderHistoryButton(memoHist, dataIndex) {
+      if (!memoHist || memoHist.length === 0) {
+        return '-';
+      }
+
+      const count = memoHist.length;
+      const lastEntry = memoHist[memoHist.length - 1];
+      const lastUser = lastEntry.created_by || 'Unknown';
+
+      return `<button class="history-btn" onclick="event.stopPropagation(); openHistoryModal(${dataIndex})">
+        ${count}건 (${lastUser})
+      </button>`;
+    }
+
+    // ====================================================================
+    // 이력 모달
+    // ====================================================================
+    function openModalByIndex(index) {
+      openModal(currentData[index]);
+    }
+
+    function openHistoryModal(dataIndex) {
+      const item = currentData[dataIndex];
+      const memoHist = item._source.dashboard?.memo_hist || [];
+
+      const historyContent = document.getElementById('historyContent');
+
+      if (memoHist.length === 0) {
+        historyContent.innerHTML = '<p style="text-align: center; padding: 40px; color: #999;">이력이 없습니다.</p>';
+      } else {
+        let html = '<div class="history-timeline">';
+
+        // 최신순으로 정렬 (역순)
+        [...memoHist].reverse().forEach((entry, index) => {
+          const isLatest = index === 0;
+          const createdAt = entry.created_at ? new Date(entry.created_at).toLocaleString('ko-KR') : '-';
+
+          html += `
+            <div class="history-item ${isLatest ? 'latest' : ''}">
+              <div class="history-header">
+                <span class="history-date">🕒 ${createdAt}</span>
+                <span class="history-user">👤 ${entry.created_by || 'Unknown'}</span>
+                ${isLatest ? '<span class="badge badge-latest">최신</span>' : ''}
+              </div>
+              <div class="history-memo">
+                <strong>수정 사유:</strong> ${entry.memo || '-'}
+              </div>
+              <div class="history-changes">
+                ${renderHistoryChanges(entry.before, entry.after)}
+              </div>
+            </div>
+          `;
+        });
+
+        html += '</div>';
+        historyContent.innerHTML = html;
+      }
+
+      document.getElementById('historyModal').classList.add('active');
+    }
+
+    function renderHistoryChanges(before, after) {
+      const fieldLabels = {
+        'category_code': '카테고리 코드',
+        'category_large': '대분류',
+        'category_medium': '중분류',
+        'category_small': '소분류',
+        'user_summary': '사용자 요약',
+        'assistant_summary': '어시스턴트 요약',
+        'support_status': '상태',
+        'support_priority': '우선순위'
+      };
+
+      // before가 null인 경우 (최초 등록)
+      if (!before && after) {
+        let html = '<table class="history-changes-table">';
+        html += '<thead><tr><th>필드</th><th>값</th></tr></thead><tbody>';
+
+        for (const [field, value] of Object.entries(after)) {
+          const label = fieldLabels[field] || field;
+          html += `
+            <tr>
+              <td><strong>${label}</strong></td>
+              <td class="new-value">${value !== null && value !== undefined ? value : '-'}</td>
+            </tr>
+          `;
+        }
+
+        html += '</tbody></table>';
+        return html;
+      }
+
+      // after가 없는 경우
+      if (!after) {
+        return '<p style="color: #999;">변경 내역 없음</p>';
+      }
+
+      // before와 after가 모두 있는 경우 (수정)
+      let html = '<table class="history-changes-table">';
+      html += '<thead><tr><th>필드</th><th>이전 값</th><th>변경 값</th></tr></thead><tbody>';
+
+      // before와 after의 모든 필드를 병합
+      const allFields = new Set([...Object.keys(before || {}), ...Object.keys(after)]);
+
+      for (const field of allFields) {
+        const oldValue = before?.[field];
+        const newValue = after[field];
+        const label = fieldLabels[field] || field;
+
+        // 값이 변경된 필드만 표시
+        if (oldValue !== newValue) {
+          html += `
+            <tr>
+              <td><strong>${label}</strong></td>
+              <td class="old-value">${oldValue !== null && oldValue !== undefined ? oldValue : '-'}</td>
+              <td class="new-value">${newValue !== null && newValue !== undefined ? newValue : '-'}</td>
+            </tr>
+          `;
+        }
+      }
+
+      html += '</tbody></table>';
+      return html;
+    }
+
+    function closeHistoryModal() {
+      document.getElementById('historyModal').classList.remove('active');
+    }
+
+    // ====================================================================
+    // 유틸리티 함수
+    // ====================================================================
+    function formatDateTime(isoString) {
+      if (!isoString) return '-';
+      const date = new Date(isoString);
+      return date.toLocaleString('ko-KR', {
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit'
+      });
+    }
+
+    function showLoading(show) {
+      document.getElementById('loadingIndicator').classList.toggle('active', show);
+      document.querySelector('.table-wrapper').style.display = show ? 'none' : 'block';
+    }
+
+    // ====================================================================
+    // 페이지네이션
+    // ====================================================================
+    function updatePagination(total) {
+      const totalPages = Math.ceil(total / pageSize);
+      document.getElementById('pageInfo').textContent = `${currentPage + 1} / ${totalPages || 1}`;
+
+      document.getElementById('prevBtn').disabled = currentPage === 0;
+      document.getElementById('nextBtn').disabled = currentPage >= totalPages - 1 || totalPages === 0;
+    }
+
+    function prevPage() {
+      if (currentPage > 0) {
+        currentPage--;
+        fetchData();
+      }
+    }
+
+    function nextPage() {
+      const totalPages = Math.ceil(totalCount / pageSize);
+      if (currentPage < totalPages - 1) {
+        currentPage++;
+        fetchData();
+      }
+    }
+
+    // ====================================================================
+    // 모달 열기/닫기
+    // ====================================================================
+    function openModal(doc) {
+      selectedDoc = doc;
+      const dashboard = doc._source.dashboard || {};
+
+      document.getElementById('modal_session_id').value = doc._source.session_id || '';
+      document.getElementById('modal_user_summary').value = dashboard.user_summary_keyword || '';
+      document.getElementById('modal_assistant_summary').value = dashboard.assistant_summary_keyword || '';
+      document.getElementById('modal_category_code').value = dashboard.category_code_keyword || '';
+      document.getElementById('modal_category_large').value = dashboard.category_large_keyword || '';
+      document.getElementById('modal_category_medium').value = dashboard.category_medium_keyword || '';
+      document.getElementById('modal_category_small').value = dashboard.category_small_keyword || '';
+      document.getElementById('modal_support_status').value = dashboard.support_status_keyword || 'OPEN';
+      document.getElementById('modal_support_priority').value = dashboard.support_priority_keyword || 'LOW';
+      document.getElementById('modal_memo').value = '';
+
+      document.getElementById('editModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('editModal').classList.remove('active');
+      selectedDoc = null;
+    }
+
+    // ====================================================================
+    // 저장 함수
+    // ====================================================================
+    async function saveChanges() {
+      if (!selectedDoc) return;
+
+      const memo = document.getElementById('modal_memo').value.trim();
+      if (!memo) {
+        alert('수정 사유를 입력해주세요.');
+        return;
+      }
+
+      const originalDashboard = selectedDoc._source.dashboard || {};
+      const now = new Date().toISOString();
+      const username = 'admin'; // TODO: 실제 사용자 ID
+
+      // 변경된 필드 수집
+      const fields = {
+        'user_summary': document.getElementById('modal_user_summary').value,
+        'assistant_summary': document.getElementById('modal_assistant_summary').value,
+        'category_code': document.getElementById('modal_category_code').value,
+        'category_large': document.getElementById('modal_category_large').value,
+        'category_medium': document.getElementById('modal_category_medium').value,
+        'category_small': document.getElementById('modal_category_small').value,
+        'support_status': document.getElementById('modal_support_status').value,
+        'support_priority': document.getElementById('modal_support_priority').value
+      };
+
+      const before = {};
+      const after = {};
+      const scriptLines = [];
+      const scriptParams = {};
+
+      for (const [field, newValue] of Object.entries(fields)) {
+        const fieldWithKeyword = field + '_keyword';
+        const oldValue = originalDashboard[fieldWithKeyword] || '';
+        if (oldValue !== newValue) {
+          // 필드 업데이트 (_keyword 필드에 저장)
+          scriptLines.push(`ctx._source.dashboard.${fieldWithKeyword} = params.${field};`);
+          scriptParams[field] = newValue;
+
+          // before/after 객체 구성 (keyword 없이 저장)
+          before[field] = oldValue;
+          after[field] = newValue;
+        }
+      }
+
+      if (Object.keys(before).length === 0) {
+        alert('변경된 항목이 없습니다.');
+        return;
+      }
+
+      // memo_hist에 이력 추가
+      scriptLines.push(`
+        if (ctx._source.dashboard.memo_hist == null) {
+          ctx._source.dashboard.memo_hist = [];
+        }
+        ctx._source.dashboard.memo_hist.add(params.history_entry);
+      `);
+
+      scriptParams.history_entry = {
+        memo: memo,
+        created_at: now,
+        created_by: username,
+        before: before,
+        after: after
+      };
+
+      const updateBody = {
+        script: {
+          source: scriptLines.join('\n'),
+          params: scriptParams
+        }
+      };
+
+      try {
+        const response = await fetch(`${OPENSEARCH_URL}/${selectedDoc._index}/_update/${selectedDoc._id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + btoa(`${OPENSEARCH_BASIC_USER}:${OPENSEARCH_BASIC_PASS}`)
+          },
+          body: JSON.stringify(updateBody)
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`업데이트 실패: ${response.status}\n${errorText}`);
+        }
+
+        alert(`저장되었습니다.\n\n변경된 필드: ${Object.keys(before).length}개`);
+        closeModal();
+        fetchData();
+
+        // 대시보드 iframe 새로고침 (캐시 제거)
+        // case3에서 저장 시 모든 대시보드 새로고침
+        refreshDashboards(true);
+      } catch (error) {
+        console.error('저장 오류:', error);
+        alert(`저장에 실패했습니다.\n\n오류: ${error.message}`);
+      }
+    }
+
+    // ====================================================================
+    // ESC 키로 모달 닫기
+    // ====================================================================
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    });
+
+    // ====================================================================
+    // 페이지 로드 시 초기화 (Keycloak 먼저)
+    // ====================================================================
+    // 로컬 환경: Keycloak 없이 바로 초기화
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
