@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HH CS 상담 통합 대시보드</title>
+  <title>드시모네몰 CS 상담 통합 대시보드</title>
   <link rel="stylesheet" href="assets/css/global.css"> <!-- 공통 스타일 -->
   <!-- Keycloak 제거: 로컬 환경에서는 Basic Auth 사용 -->
 </head>
@@ -12,10 +12,10 @@
   <div class="header">
     <div class="header-left-area">
       <h1 class="brand-title">
-        <img src="assets/images/logo.svg" alt="Hecto" class="brand-logo">
-        <span class="title">HH CS 상담 통합 대시보드</span>
+        <img src="assets/images/mark.svg" alt="Hecto" class="brand-logo">
+        <span class="title">드시모네몰 CS 상담 통합 대시보드</span>
       </h1>
-      <p>주별 분석 및 일별/시간별 상담 데이터 조회 · 수정</p>
+      <!-- <p>주별 분석 및 일별/시간별 상담 데이터 조회 · 수정</p> -->
     </div>
     <div class="header-right-area">
       <span>kimjaehee@hecto.co.kr</span>
@@ -24,15 +24,15 @@
       </button>
     </div>
   </div>
+  
+  <!-- 탭 네비게이션 -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('case1')">주별 대시보드</button>
+    <button class="tab-btn" onclick="switchTab('case2')">일별/시간별 대시보드</button>
+    <button class="tab-btn" onclick="switchTab('case3')">데이터 목록</button>
+  </div>
 
   <div class="container">
-    <!-- 탭 네비게이션 -->
-    <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('case1')">주별 대시보드</button>
-      <button class="tab-btn" onclick="switchTab('case2')">일별/시간별 대시보드</button>
-      <button class="tab-btn" onclick="switchTab('case3')">데이터 목록</button>
-    </div>
-
     <!-- Case 1: 주별 대시보드 -->
     <div id="tab-case1" class="tab-content active">
       <!-- 필터 영역 -->
@@ -47,26 +47,23 @@
             <label>종료일</label>
             <input type="datetime-local" id="dateTo" value="2025-12-31T23:59">
           </div>
-          <button class="btn btn-min-width" onclick="applyFilters()">조회</button>
         </div>
-      </div>
-
-      <!-- 새로고침 버튼 -->
-      <div style="text-align: right; margin-bottom: 10px;">
-        <button class="btn btn-dark" onclick="refreshDashboards()" title="대시보드를 HTML 필터 기준으로 새로고침">
-          대시보드 새로고침
-        </button>
+        <div class="btn-area">
+          <button class="btn btn-primary" onclick="applyFilters()">조회</button>
+        </div>
       </div>
 
       <!-- 안내 메시지 -->
       <div class="info-banner">
         <div class="info-content">
-          <span class="info-icon">ℹ️</span>
-          <span class="info-text">
-            <strong>대시보드 인터랙션 안내:</strong>
+          <div class="info-text">
             대시보드 내에서 차트를 클릭하거나 Time Range를 변경하면 위의 HTML 필터와 동기화되지 않습니다.
             원래 필터 기준으로 되돌리려면 <strong>대시보드 새로고침</strong> 버튼을 클릭하세요.
-          </span>
+          </div>
+          <!-- 새로고침 버튼 -->
+          <button class="btn btn-sm btn-primary" onclick="refreshDashboards()" title="대시보드를 HTML 필터 기준으로 새로고침">
+            대시보드 새로고침
+          </button>
         </div>
       </div>
 
@@ -90,26 +87,23 @@
             <label>종료일</label>
             <input type="datetime-local" id="dateTo2" value="2025-12-31T23:59">
           </div>
-          <button class="btn btn-min-width" onclick="applyFilters()">조회</button>
         </div>
-      </div>
-
-      <!-- 새로고침 버튼 -->
-      <div style="text-align: right; margin-bottom: 10px;">
-        <button class="btn btn-dark" onclick="refreshDashboards()" title="대시보드를 HTML 필터 기준으로 새로고침">
-          대시보드 새로고침
-        </button>
+        <div class="btn-area">
+          <button class="btn btn-primary" onclick="applyFilters()">조회</button>
+        </div>
       </div>
 
       <!-- 안내 메시지 -->
       <div class="info-banner">
         <div class="info-content">
-          <span class="info-icon">ℹ️</span>
-          <span class="info-text">
-            <strong>대시보드 인터랙션 안내:</strong>
+          <div class="info-text">
             대시보드 내에서 차트를 클릭하거나 Time Range를 변경하면 위의 HTML 필터와 동기화되지 않습니다.
             원래 필터 기준으로 되돌리려면 <strong>대시보드 새로고침</strong> 버튼을 클릭하세요.
-          </span>
+          </div>
+          <!-- 새로고침 버튼 -->
+          <button class="btn btn-sm btn-primary" onclick="refreshDashboards()" title="대시보드를 HTML 필터 기준으로 새로고침">
+            대시보드 새로고침
+          </button>
         </div>
       </div>
 
@@ -133,16 +127,16 @@
             <label>종료일</label>
             <input type="datetime-local" id="dateTo3" value="2025-12-31T23:59">
           </div>
+        </div>
+
+        <!-- 두 번째 줄: 카테고리 -->
+        <div class="filter-controls">
           <div class="filter-group">
             <label>에이전트 ID</label>
             <select id="agentFilter3">
               <option value="">전체</option>
             </select>
           </div>
-        </div>
-
-        <!-- 두 번째 줄: 카테고리 -->
-        <div class="filter-controls">
           <div class="filter-group">
             <label>대분류</label>
             <select id="categoryLargeFilter3" onchange="onCategoryLargeChange3()">
@@ -188,58 +182,66 @@
 
         <!-- 네 번째 줄: 키워드 검색 -->
         <div class="filter-controls">
-          <div class="filter-group w-lg">
-            <label>사용자 요약 키워드</label>
+          <div class="filter-group">
+            <label>사용자 요약</label>
             <input type="text" id="userSummaryFilter3" placeholder="검색어 입력">
           </div>
           <div class="filter-group">
-            <label>어시스턴트 요약 키워드</label>
+            <label>어시스턴트 요약</label>
             <input type="text" id="assistantSummaryFilter3" placeholder="검색어 입력">
           </div>
         </div>
 
         <!-- 다섯 번째 줄: 조회 버튼 -->
-        <div class="filter-controls">
-          <button class="btn btn-min-width" onclick="applyFilters()">조회</button>
+        <div class="btn-area">
+          <button class="btn btn-primary" onclick="applyFilters()">조회</button>
         </div>
       </div>
 
       <!-- 데이터 그리드 -->
       <div class="grid-section">
-      <div class="grid-header">
-        <h2>데이터 목록 (<span id="totalCount">0</span>건)</h2>
-      </div>
+        <div class="grid-header">
+          <h2>데이터 목록 (<span id="totalCount">0</span>건)</h2>
+          <div class="btn-area">
+            <button class="btn btn-sm" onclick="downloadCurrentPageCSV()">
+              현재 페이지 다운로드
+            </button>
+            <button class="btn btn-sm" onclick="downloadAllDataCSV()">
+              전체 데이터 다운로드
+            </button>
+          </div>
+        </div>
 
-      <div class="loading" id="loadingIndicator">데이터를 불러오는 중...</div>
+        <div class="loading" id="loadingIndicator">데이터를 불러오는 중...</div>
 
-      <div class="table-wrapper">
-        <table id="dataGrid">
-          <thead>
-            <tr>
-              <th>타임스탬프</th>
-              <th>세션 ID</th>
-              <th>대분류</th>
-              <th>중분류</th>
-              <th>소분류</th>
-              <th>사용자 요약</th>
-              <th>어시스턴트 요약</th>
-              <th>상태</th>
-              <th>우선순위</th>
-              <th>이력</th>
-            </tr>
-          </thead>
-          <tbody id="gridBody">
-            <!-- 동적 렌더링 -->
-          </tbody>
-        </table>
-      </div>
+        <div class="table-wrapper">
+          <table id="dataGrid">
+            <thead>
+              <tr>
+                <th>타임스탬프</th>
+                <th>세션 ID</th>
+                <th>대분류</th>
+                <th>중분류</th>
+                <th>소분류</th>
+                <th>사용자 요약</th>
+                <th>어시스턴트 요약</th>
+                <th>상태</th>
+                <th>우선순위</th>
+                <th>수정 이력</th>
+              </tr>
+            </thead>
+            <tbody id="gridBody">
+              <!-- 동적 렌더링 -->
+            </tbody>
+          </table>
+        </div>
 
-      <div class="pagination">
-        <button onclick="prevPage()" id="prevBtn">&lt; 이전</button>
-        <span id="pageInfo">1 / 1</span>
-        <button onclick="nextPage()" id="nextBtn">다음 &gt;</button>
+        <div class="pagination">
+          <button onclick="prevPage()" id="prevBtn">&lt; 이전</button>
+          <span id="pageInfo">1 / 1</span>
+          <button onclick="nextPage()" id="nextBtn">다음 &gt;</button>
+        </div>
       </div>
-    </div>
     </div>
   </div>
 
@@ -248,86 +250,88 @@
     <div class="modal-content">
       <div class="modal-header">데이터 수정</div>
 
-      <div class="modal-field">
-        <label>세션 ID</label>
-        <input type="text" id="modal_session_id" disabled>
-      </div>
-
-      <div class="modal-field">
-        <label>사용자 요약 (user_summary)</label>
-        <textarea id="modal_user_summary"></textarea>
-      </div>
-
-      <div class="modal-field">
-        <label>어시스턴트 요약 (assistant_summary)</label>
-        <textarea id="modal_assistant_summary"></textarea>
-      </div>
-
-      <div class="modal-field">
-        <label>대분류 코드 (category_code)</label>
-        <input type="text" id="modal_category_code" placeholder="예: A-01">
-      </div>
-
-      <div class="modal-field">
-        <label>대분류 (category_large)</label>
-        <input type="text" id="modal_category_large" placeholder="예: A">
-      </div>
-
-      <div class="modal-field">
-        <label>중분류 (category_medium)</label>
-        <input type="text" id="modal_category_medium" placeholder="예: 01">
-      </div>
-
-      <div class="modal-field">
-        <label>소분류 (category_small)</label>
-        <input type="text" id="modal_category_small" placeholder="선택사항">
-      </div>
-
-      <div class="modal-field">
-        <label>지원 상태 (support_status)</label>
-        <select id="modal_support_status">
-          <option value="OPEN">OPEN</option>
-          <option value="IN_PROGRESS">IN_PROGRESS</option>
-          <option value="CLOSED">CLOSED</option>
-        </select>
-      </div>
-
-      <div class="modal-field">
-        <label>우선순위 (support_priority)</label>
-        <select id="modal_support_priority">
-          <option value="LOW">LOW</option>
-          <option value="MEDIUM">MEDIUM</option>
-          <option value="HIGH">HIGH</option>
-          <option value="URGENT">URGENT</option>
-        </select>
-      </div>
-
-      <div class="modal-field">
-        <label>수정 사유<span class="required">*</span></label>
-        <textarea id="modal_memo" placeholder="수정 사유를 입력해주세요" required></textarea>
+      <div class="modal-body">
+        <div class="modal-field">
+          <label>세션 ID</label>
+          <input type="text" id="modal_session_id" placeholder="세션 ID" disabled>
+        </div>
+  
+        <div class="modal-field">
+          <label>사용자 요약 (user_summary)</label>
+          <textarea id="modal_user_summary" placeholder="사용자 요약"></textarea>
+        </div>
+  
+        <div class="modal-field">
+          <label>어시스턴트 요약 (assistant_summary)</label>
+          <textarea id="modal_assistant_summary" placeholder="어시스턴트 요약"></textarea>
+        </div>
+  
+        <div class="modal-field">
+          <label>대분류 코드 (category_code)</label>
+          <input type="text" id="modal_category_code" placeholder="예: A-01">
+        </div>
+  
+        <div class="modal-field">
+          <label>대분류 (category_large)</label>
+          <input type="text" id="modal_category_large" placeholder="예: A">
+        </div>
+  
+        <div class="modal-field">
+          <label>중분류 (category_medium)</label>
+          <input type="text" id="modal_category_medium" placeholder="예: 01">
+        </div>
+  
+        <div class="modal-field">
+          <label>소분류 (category_small)</label>
+          <input type="text" id="modal_category_small" placeholder="소분류">
+        </div>
+  
+        <div class="modal-field">
+          <label>지원 상태 (support_status)</label>
+          <select id="modal_support_status">
+            <option value="OPEN">OPEN</option>
+            <option value="IN_PROGRESS">IN_PROGRESS</option>
+            <option value="CLOSED">CLOSED</option>
+          </select>
+        </div>
+  
+        <div class="modal-field">
+          <label>우선순위 (support_priority)</label>
+          <select id="modal_support_priority">
+            <option value="LOW">LOW</option>
+            <option value="MEDIUM">MEDIUM</option>
+            <option value="HIGH">HIGH</option>
+            <option value="URGENT">URGENT</option>
+          </select>
+        </div>
+  
+        <div class="modal-field">
+          <label>수정 사유<span class="required">*</span></label>
+          <textarea id="modal_memo" placeholder="수정 사유" required></textarea>
+        </div>
       </div>
 
       <div class="modal-buttons">
-        <button class="btn btn-cancel" onclick="closeModal()">취소</button>
-        <button class="btn" onclick="saveChanges()">저장</button>
+        <button class="btn btn-light" onclick="closeModal()">취소</button>
+        <button class="btn btn-primary" onclick="saveChanges()">저장</button>
       </div>
     </div>
   </div>
 
   <!-- 이력 모달 -->
   <div id="historyModal" class="modal">
-    <div class="modal-content" style="max-width: 800px;">
+    <div class="modal-content">
       <div class="modal-header">
         수정 이력
         <button class="modal-close" onclick="closeHistoryModal()">&times;</button>
       </div>
 
-      <div id="historyContent" style="max-height: 500px; overflow-y: auto;">
+      <div id="historyContent" class="modal-body">
         <!-- 동적 렌더링 -->
       </div>
 
       <div class="modal-buttons">
-        <button class="btn btn-cancel" onclick="closeHistoryModal()">닫기</button>
+        <button class="btn btn-light" onclick="closeHistoryModal()">닫기</button>
       </div>
     </div>
   </div>
@@ -455,7 +459,7 @@
           "agent_name": "🟪[HH][드시모네몰] 고객 질의답변 에이전트 (v1.1.4)",
           "session_id": "b9f7c025d09f48549bb26615c56d257e",
           "dashboard": {
-            "support_priority_keyword": "",
+            "support_priority_keyword": "HIGH",
             "category_large_code_keyword": "B",
             "category_medium_code_keyword": "40",
             "category_small_code_keyword": "2",
@@ -465,7 +469,7 @@
             "category_small_name_keyword": "증상별 상품 추천",
             "user_summary_search": "성인 눈영양제 구입 문의",
             "assistant_summary_search": "또박케어LAB 루테인 비타민A를 성인 눈 건강용 제품으로 안내하며 루테인 20mg, 아스타잔틴 4mg, 비타민A 700μgRAE, 60캡슐/2개월분, 가격 38,000원과 기능·섭취 대상·주의사항 및 드시모네몰 구매 가능 여부 안내",
-            "support_status_keyword": "NEW"
+            "support_status_keyword": "IN_PROGRESS"
           }
         }
       },
@@ -964,7 +968,7 @@
       tbody.innerHTML = '';
 
       if (data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 50px; color: #999;">조회된 데이터가 없습니다.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" class="text-empty">조회된 데이터가 없습니다.</td></tr>';
         document.getElementById('totalCount').textContent = '0';
         return;
       }
@@ -1022,7 +1026,7 @@
       const lastEntry = memoHist[memoHist.length - 1];
       const lastUser = lastEntry.created_by || 'Unknown';
 
-      return `<button class="btn btn-sm btn-dark" onclick="event.stopPropagation(); openHistoryModal(${dataIndex})">
+      return `<button class="btn btn-sm btn-light" onclick="event.stopPropagation(); openHistoryModal(${dataIndex})">
         ${count}건 (${lastUser})
       </button>`;
     }
@@ -1041,7 +1045,7 @@
       const historyContent = document.getElementById('historyContent');
 
       if (memoHist.length === 0) {
-        historyContent.innerHTML = '<p style="text-align: center; padding: 40px; color: #999;">이력이 없습니다.</p>';
+        historyContent.innerHTML = '<p class="text-empty">이력이 없습니다.</p>';
       } else {
         let html = '<div class="history-timeline">';
 
@@ -1053,8 +1057,8 @@
           html += `
             <div class="history-item ${isLatest ? 'latest' : ''}">
               <div class="history-header">
-                <span class="history-date">🕒 ${createdAt}</span>
-                <span class="history-user">👤 ${entry.created_by || 'Unknown'}</span>
+                <span class="history-date">${createdAt}</span>
+                <span class="history-user">${entry.created_by || 'Unknown'}</span>
                 ${isLatest ? '<span class="badge badge-latest">최신</span>' : ''}
               </div>
               <div class="history-memo">
@@ -1107,7 +1111,7 @@
 
       // after가 없는 경우
       if (!after) {
-        return '<p style="color: #999;">변경 내역 없음</p>';
+        return '<p class="text-empty">변경 내역 없음</p>';
       }
 
       // before와 after가 모두 있는 경우 (수정)
@@ -1219,7 +1223,7 @@
 
       const memo = document.getElementById('modal_memo').value.trim();
       if (!memo) {
-        alert('수정 사유를 입력해주세요.');
+        alert('수정 사유를 입력해 주세요.');
         return;
       }
 
