@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="assets/css/global.css"> <!-- 공통 스타일 -->
   <!-- Keycloak 제거: 로컬 환경에서는 Basic Auth 사용 -->
 </head>
+
 <body>
   <!-- 헤더 -->
   <div class="header">
@@ -19,24 +21,24 @@
     </div>
     <div class="header-right-area">
       <span>kimjaehee@hecto.co.kr</span>
-      <button onclick="logout()" class="btn btn-sm btn-white">
+      <button type="button" onclick="logout()" class="btn btn-sm btn-white">
         로그아웃
       </button>
     </div>
   </div>
-  
+
   <!-- 탭 네비게이션 -->
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('case1')">주별 대시보드</button>
-    <button class="tab-btn" onclick="switchTab('case2')">일별/시간별 대시보드</button>
-    <button class="tab-btn" onclick="switchTab('case3')">데이터 목록</button>
+    <button type="button" class="tab-btn active" onclick="switchTab('case1')">주별 대시보드</button>
+    <button type="button" class="tab-btn" onclick="switchTab('case2')">일별/시간별 대시보드</button>
+    <button type="button" class="tab-btn" onclick="switchTab('case3')">데이터 목록</button>
   </div>
 
   <div class="container">
     <!-- Case 1: 주별 대시보드 -->
     <div id="tab-case1" class="tab-content active">
       <!-- 필터 영역 -->
-      <div class="filter-section">
+      <div class="filter-section card">
         <!-- 날짜 필터 -->
         <div class="filter-controls">
           <div class="filter-group">
@@ -49,34 +51,46 @@
           </div>
         </div>
         <div class="btn-area">
-          <button class="btn btn-primary" onclick="applyFilters()">조회</button>
+          <button type="button" class="btn btn-primary" onclick="applyFilters()">조회</button>
+          <div class="filter-group">
+            <label>조회 결과 다운로드</label>
+            <select id="tableDownloadSelect">
+              <option value="">다운로드할 테이블 선택</option>
+              <option value="hourly_pivot">시간대별 문의 건수 (테이블)</option>
+              <option value="daily_grid">일자별 대화 및 문의 건수 (테이블)</option>
+              <option value="detail_summary">상세 요약 내용</option>
+              <option value="conversation">대화 원문</option>
+            </select>
+            <button type="button" class="btn btn-outline-success" onclick="downloadTableCSV()">
+              CSV 다운로드
+            </button>
+          </div>
         </div>
       </div>
 
       <!-- 안내 메시지 -->
-      <div class="info-banner">
+      <!-- <div class="info-banner">
         <div class="info-content">
           <div class="info-text">
             대시보드 내에서 차트를 클릭하거나 Time Range를 변경하면 위의 HTML 필터와 동기화되지 않습니다.
             원래 필터 기준으로 되돌리려면 <strong>대시보드 새로고침</strong> 버튼을 클릭하세요.
           </div>
-          <!-- 새로고침 버튼 -->
-          <button class="btn btn-sm btn-primary" onclick="refreshDashboards()" title="대시보드를 HTML 필터 기준으로 새로고침">
+          <button type="button" class="btn btn-sm btn-primary" onclick="refreshDashboards()" title="대시보드를 HTML 필터 기준으로 새로고침">
             대시보드 새로고침
           </button>
         </div>
-      </div>
+      </div> -->
 
       <!-- 대시보드 iframe -->
-      <div class="dashboard-container">
-        <iframe id="iframe-case1" src="" style="width: 100%; height: 900px; border: none; background: white;"></iframe>
+      <div class="dashboard-container card">
+        <iframe id="iframe-case1" src="" style="height: 900px;"></iframe>
       </div>
     </div>
 
     <!-- Case 2: 일별/시간별 대시보드 -->
     <div id="tab-case2" class="tab-content">
       <!-- 필터 영역 -->
-      <div class="filter-section">
+      <div class="filter-section card">
         <!-- 날짜 필터 -->
         <div class="filter-controls">
           <div class="filter-group">
@@ -89,34 +103,46 @@
           </div>
         </div>
         <div class="btn-area">
-          <button class="btn btn-primary" onclick="applyFilters()">조회</button>
+          <button type="button" class="btn btn-primary" onclick="applyFilters()">조회</button>
+          <div class="filter-group">
+            <label>조회 결과 다운로드</label>
+            <select id="tableDownloadSelect">
+              <option value="">다운로드할 테이블 선택</option>
+              <option value="hourly_pivot">시간대별 문의 건수 (테이블)</option>
+              <option value="daily_grid">일자별 대화 및 문의 건수 (테이블)</option>
+              <option value="detail_summary">상세 요약 내용</option>
+              <option value="conversation">대화 원문</option>
+            </select>
+            <button type="button" class="btn btn-outline-success" onclick="downloadTableCSV()">
+              CSV 다운로드
+            </button>
+          </div>
         </div>
       </div>
 
       <!-- 안내 메시지 -->
-      <div class="info-banner">
+      <!-- <div class="info-banner">
         <div class="info-content">
           <div class="info-text">
             대시보드 내에서 차트를 클릭하거나 Time Range를 변경하면 위의 HTML 필터와 동기화되지 않습니다.
             원래 필터 기준으로 되돌리려면 <strong>대시보드 새로고침</strong> 버튼을 클릭하세요.
           </div>
-          <!-- 새로고침 버튼 -->
-          <button class="btn btn-sm btn-primary" onclick="refreshDashboards()" title="대시보드를 HTML 필터 기준으로 새로고침">
+          <button type="button" class="btn btn-sm btn-primary" onclick="refreshDashboards()" title="대시보드를 HTML 필터 기준으로 새로고침">
             대시보드 새로고침
           </button>
         </div>
-      </div>
+      </div> -->
 
       <!-- 대시보드 iframe -->
-      <div class="dashboard-container">
-        <iframe id="iframe-case2" src="" style="width: 100%; height: 900px; border: none; background: white;"></iframe>
+      <div class="dashboard-container card">
+        <iframe id="iframe-case2" src="" style="height: 900px;"></iframe>
       </div>
     </div>
 
     <!-- Case 3: 데이터 목록 -->
     <div id="tab-case3" class="tab-content">
       <!-- 필터 영역 (복제) -->
-      <div class="filter-section">
+      <div class="filter-section card">
         <!-- 첫 번째 줄: 날짜 및 에이전트 -->
         <div class="filter-controls">
           <div class="filter-group">
@@ -131,12 +157,6 @@
 
         <!-- 두 번째 줄: 카테고리 -->
         <div class="filter-controls">
-          <div class="filter-group">
-            <label>에이전트 ID</label>
-            <select id="agentFilter3">
-              <option value="">전체</option>
-            </select>
-          </div>
           <div class="filter-group">
             <label>대분류</label>
             <select id="categoryLargeFilter3" onchange="onCategoryLargeChange3()">
@@ -160,7 +180,7 @@
         <!-- 세 번째 줄: 상태 및 우선순위 -->
         <div class="filter-controls">
           <div class="filter-group">
-            <label>상태</label>
+            <label>지원 상태</label>
             <select id="statusFilter3">
               <option value="">전체</option>
               <option value="OPEN">열림</option>
@@ -183,6 +203,16 @@
         <!-- 네 번째 줄: 키워드 검색 -->
         <div class="filter-controls">
           <div class="filter-group">
+            <label>에이전트 ID</label>
+            <select id="agentFilter3">
+              <option value="">전체</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>세션 ID</label>
+            <input type="text" id="" placeholder="검색어 입력">
+          </div>
+          <div class="filter-group">
             <label>사용자 요약</label>
             <input type="text" id="userSummaryFilter3" placeholder="검색어 입력">
           </div>
@@ -194,22 +224,23 @@
 
         <!-- 다섯 번째 줄: 조회 버튼 -->
         <div class="btn-area">
-          <button class="btn btn-primary" onclick="applyFilters()">조회</button>
+          <button type="button" class="btn btn-primary" onclick="applyFilters()">조회</button>
+          <div class="filter-group">
+            <label>조회 결과 다운로드</label>
+            <button type="button" class="btn btn-outline-success" onclick="downloadCurrentPageCSV()">
+              현재 페이지 CSV 다운로드
+            </button>
+            <button type="button" class="btn btn-outline-success" onclick="downloadAllDataCSV()">
+              전체 데이터 CSV 다운로드
+            </button>
+          </div>
         </div>
       </div>
 
       <!-- 데이터 그리드 -->
-      <div class="grid-section">
+      <div class="grid-section card">
         <div class="grid-header">
           <h2>데이터 목록 (<span id="totalCount">0</span>건)</h2>
-          <div class="btn-area">
-            <button class="btn btn-sm" onclick="downloadCurrentPageCSV()">
-              현재 페이지 다운로드
-            </button>
-            <button class="btn btn-sm" onclick="downloadAllDataCSV()">
-              전체 데이터 다운로드
-            </button>
-          </div>
         </div>
 
         <div class="loading" id="loadingIndicator">데이터를 불러오는 중...</div>
@@ -225,7 +256,7 @@
                 <th>소분류</th>
                 <th>사용자 요약</th>
                 <th>어시스턴트 요약</th>
-                <th>상태</th>
+                <th>지원 상태</th>
                 <th>우선순위</th>
                 <th>수정 이력</th>
               </tr>
@@ -237,9 +268,9 @@
         </div>
 
         <div class="pagination">
-          <button onclick="prevPage()" id="prevBtn">&lt; 이전</button>
+          <button type="button" onclick="prevPage()" id="prevBtn">&lt; 이전</button>
           <span id="pageInfo">1 / 1</span>
-          <button onclick="nextPage()" id="nextBtn">다음 &gt;</button>
+          <button type="button" onclick="nextPage()" id="nextBtn">다음 &gt;</button>
         </div>
       </div>
     </div>
@@ -250,70 +281,255 @@
     <div class="modal-content">
       <div class="modal-header">데이터 수정</div>
 
-      <div class="modal-body">
+      <div class="modal-body form-wrapper">
         <div class="modal-field">
           <label>세션 ID</label>
           <input type="text" id="modal_session_id" placeholder="세션 ID" disabled>
         </div>
-  
+
         <div class="modal-field">
           <label>사용자 요약 (user_summary)</label>
           <textarea id="modal_user_summary" placeholder="사용자 요약"></textarea>
         </div>
-  
+
         <div class="modal-field">
           <label>어시스턴트 요약 (assistant_summary)</label>
           <textarea id="modal_assistant_summary" placeholder="어시스턴트 요약"></textarea>
         </div>
-  
+
         <div class="modal-field">
+          <label>카테고리 (대분류/중분류/소분류)</label>
+          <div id="modal_categories_container" class="category-list">
+            <div class="category-item">
+              <div class="title">카테고리 #1</div>
+              <div class="content">
+                <div class="form-group">
+                  <label class="sr-only">대분류</label>
+                  <select class="category-large" data-index="0" onchange="onCategoryChange(0, 'large')">
+                    <option value="">대분류 선택</option>
+                    <option value="A">A - 회원</option>
+                    <option value="B">B - 제품</option>
+                    <option value="C">C - 제품 불량/품질 이슈</option>
+                    <option value="D">D - 구매</option>
+                    <option value="E">E - 결제</option>
+                    <option value="F">F - 주문 관리</option>
+                    <option value="G">G - 일반 배송</option>
+                    <option value="H">H - 정기 구독(또박배송)</option>
+                    <option value="I">I - 멤버십/리워드 혜택</option>
+                    <option value="J">J - 이벤트(프로모션)/사은품</option>
+                    <option value="K">K - 홈페이지/앱</option>
+                    <option value="L">L - 시스템 오류</option>
+                    <option value="M">M - 피드백/제안</option>
+                    <option value="N">N - 고객센터</option>
+                    <option value="O">O - B2B/제휴</option>
+                    <option value="Z">Z - 기타</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="sr-only">중분류</label>
+                  <select class="category-medium" data-index="0" onchange="onCategoryChange(0, 'medium')">
+                    <option value="">중분류 선택</option>
+                    <option value="10">10 - 구독 혜택/신청</option>
+                    <option value="20">20 - 구독 정책</option>
+                    <option value="30">30 - 구독 변경</option>
+                    <option value="40">40 - 구독 결제</option>
+                    <option value="50">50 - 구독 배송</option>
+                    <option value="90">90 - 구독 해지</option>
+                    <option value="99">99 - 기타 정기 구독 관련</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="sr-only">소분류</label>
+                  <select class="category-small" data-index="0" onchange="onCategoryChange(0, 'small')">
+                    <option value="">소분류 선택</option>
+                    <option value="1">1 - 구독 건너뛰기</option>
+                    <option value="2">2 - 구독 상품 변경</option>
+                    <option value="99">99 - 기타 구독 변경 관련</option>
+                  </select>
+                </div>
+              </div>
+              <input type="hidden" class="category-doc-index"
+                value="agent_dashboard_stage_30573970fd8d4701b23f7727b73aa099">
+              <input type="hidden" class="category-doc-id" value="8jfIRZwB49yqHgXDRFQC">
+            </div>
+            <div class="category-item">
+              <div class="title">카테고리 #2</div>
+              <div class="content">
+                <div class="form-group">
+                  <label class="sr-only">대분류</label>
+                  <select class="category-large" data-index="1" onchange="onCategoryChange(1, 'large')">
+                    <option value="">대분류 선택</option>
+                    <option value="A">A - 회원</option>
+                    <option value="B">B - 제품</option>
+                    <option value="C">C - 제품 불량/품질 이슈</option>
+                    <option value="D">D - 구매</option>
+                    <option value="E">E - 결제</option>
+                    <option value="F">F - 주문 관리</option>
+                    <option value="G">G - 일반 배송</option>
+                    <option value="H">H - 정기 구독(또박배송)</option>
+                    <option value="I">I - 멤버십/리워드 혜택</option>
+                    <option value="J">J - 이벤트(프로모션)/사은품</option>
+                    <option value="K">K - 홈페이지/앱</option>
+                    <option value="L">L - 시스템 오류</option>
+                    <option value="M">M - 피드백/제안</option>
+                    <option value="N">N - 고객센터</option>
+                    <option value="O">O - B2B/제휴</option>
+                    <option value="Z">Z - 기타</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="sr-only">중분류</label>
+                  <select class="category-medium" data-index="1" onchange="onCategoryChange(1, 'medium')">
+                    <option value="">중분류 선택</option>
+                    <option value="10">10 - 구독 혜택/신청</option>
+                    <option value="20">20 - 구독 정책</option>
+                    <option value="30">30 - 구독 변경</option>
+                    <option value="40">40 - 구독 결제</option>
+                    <option value="50">50 - 구독 배송</option>
+                    <option value="90">90 - 구독 해지</option>
+                    <option value="99">99 - 기타 정기 구독 관련</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="sr-only">소분류</label>
+                  <select class="category-small" data-index="1" onchange="onCategoryChange(1, 'small')">
+                    <option value="">소분류 선택</option>
+                    <option value="1">1 - 구독 해지 정책</option>
+                    <option value="2">2 - 구독 해지 위약금</option>
+                    <option value="99">99 - 기타 구독 해지 관련 문의</option>
+                  </select>
+                </div>
+              </div>
+              <input type="hidden" class="category-doc-index"
+                value="agent_dashboard_stage_30573970fd8d4701b23f7727b73aa099">
+              <input type="hidden" class="category-doc-id" value="_TfIRZwB49yqHgXDRlRl">
+            </div>
+            <div class="category-item">
+              <div class="title">카테고리 #3</div>
+              <div class="content">
+                <div class="form-group">
+                  <label class="sr-only">대분류</label>
+                  <select class="category-large" data-index="2" onchange="onCategoryChange(2, 'large')">
+                    <option value="">대분류 선택</option>
+                    <option value="A">A - 회원</option>
+                    <option value="B">B - 제품</option>
+                    <option value="C">C - 제품 불량/품질 이슈</option>
+                    <option value="D">D - 구매</option>
+                    <option value="E">E - 결제</option>
+                    <option value="F">F - 주문 관리</option>
+                    <option value="G">G - 일반 배송</option>
+                    <option value="H">H - 정기 구독(또박배송)</option>
+                    <option value="I">I - 멤버십/리워드 혜택</option>
+                    <option value="J">J - 이벤트(프로모션)/사은품</option>
+                    <option value="K">K - 홈페이지/앱</option>
+                    <option value="L">L - 시스템 오류</option>
+                    <option value="M">M - 피드백/제안</option>
+                    <option value="N">N - 고객센터</option>
+                    <option value="O">O - B2B/제휴</option>
+                    <option value="Z">Z - 기타</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="sr-only">중분류</label>
+                  <select class="category-medium" data-index="2" onchange="onCategoryChange(2, 'medium')">
+                    <option value="">중분류 선택</option>
+                    <option value="10">10 - 구독 혜택/신청</option>
+                    <option value="20">20 - 구독 정책</option>
+                    <option value="30">30 - 구독 변경</option>
+                    <option value="40">40 - 구독 결제</option>
+                    <option value="50">50 - 구독 배송</option>
+                    <option value="90">90 - 구독 해지</option>
+                    <option value="99">99 - 기타 정기 구독 관련</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="sr-only">소분류</label>
+                  <select class="category-small" data-index="2" onchange="onCategoryChange(2, 'small')" disabled="">
+                    <option value="">소분류 선택</option>
+                  </select>
+                </div>
+              </div>
+              <input type="hidden" class="category-doc-index"
+                value="agent_dashboard_stage_30573970fd8d4701b23f7727b73aa099">
+              <input type="hidden" class="category-doc-id" value="-DfIRZwB49yqHgXDRVQ4">
+            </div>
+          </div>
+        </div>
+
+        <!-- 미사용 폼: .d-none -->
+        <div class="modal-field d-none">
           <label>대분류 코드 (category_code)</label>
           <input type="text" id="modal_category_code" placeholder="예: A-01">
         </div>
-  
-        <div class="modal-field">
+
+        <div class="modal-field d-none">
           <label>대분류 (category_large)</label>
           <input type="text" id="modal_category_large" placeholder="예: A">
         </div>
-  
-        <div class="modal-field">
+
+        <div class="modal-field d-none">
           <label>중분류 (category_medium)</label>
           <input type="text" id="modal_category_medium" placeholder="예: 01">
         </div>
-  
-        <div class="modal-field">
+
+        <div class="modal-field d-none">
           <label>소분류 (category_small)</label>
           <input type="text" id="modal_category_small" placeholder="소분류">
         </div>
-  
-        <div class="modal-field">
-          <label>지원 상태 (support_status)</label>
-          <select id="modal_support_status">
-            <option value="OPEN">OPEN</option>
-            <option value="IN_PROGRESS">IN_PROGRESS</option>
-            <option value="CLOSED">CLOSED</option>
-          </select>
+        <!-- //미사용 폼: .d-none -->
+
+        <div class="grid-2">
+          <div class="modal-field">
+            <label>지원 상태 (support_status)</label>
+            <select id="modal_support_status">
+              <option value="OPEN">OPEN</option>
+              <option value="IN_PROGRESS">IN_PROGRESS</option>
+              <option value="CLOSED">CLOSED</option>
+            </select>
+          </div>
+
+          <div class="modal-field">
+            <label>우선순위 (support_priority)</label>
+            <select id="modal_support_priority">
+              <option value="LOW">LOW</option>
+              <option value="MEDIUM">MEDIUM</option>
+              <option value="HIGH">HIGH</option>
+              <option value="URGENT">URGENT</option>
+            </select>
+          </div>
         </div>
-  
-        <div class="modal-field">
-          <label>우선순위 (support_priority)</label>
-          <select id="modal_support_priority">
-            <option value="LOW">LOW</option>
-            <option value="MEDIUM">MEDIUM</option>
-            <option value="HIGH">HIGH</option>
-            <option value="URGENT">URGENT</option>
-          </select>
-        </div>
-  
+        
         <div class="modal-field">
           <label>수정 사유<span class="required">*</span></label>
           <textarea id="modal_memo" placeholder="수정 사유" required></textarea>
         </div>
+
+        <div class="modal-field chat-history-section">
+          <label>대화 원문</label>
+          <div id="modal_chat_history" class="chat-history-list">
+            <div class="chat-bubble user">
+              <div class="chat-bubble-label">사용자 · 2026-02-03 21:44:18</div>
+              <div class="chat-bubble-content">정기로결제해서먹고싶은데 6개월안되서 스텝2로넘어갈수있나요?</div>
+            </div>
+            <div class="chat-bubble assistant">
+              <div class="chat-bubble-label">어시스턴트 · 2026-02-03 21:44:35</div>
+              <div class="chat-bubble-content">[요약]
+정기구독 이용 중 6개월이 되지 않아도 스텝2(상위 단계) 제품으로 변경이 가능합니다.
+
+[상세 내용]
+- 상품 변경은 6개월 기간 동안 2회까지 가능하며, 매월 연속 변경은 불가합니다.
+- 상품 변경은 고객센터(1688-8211)로 문의해야 하며, 동일 상품 내 맛 변경은 마이페이지에서 직접 가능합니다.
+
+[제한사항]
+- 정기구독 1~5회차 내 중도 해지 시 할인반환금(위약금)이 발생하며, 6회차 결제 완료 후에는 위약금 없이 해지할 수 있습니다.</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="modal-buttons">
-        <button class="btn btn-light" onclick="closeModal()">취소</button>
-        <button class="btn btn-primary" onclick="saveChanges()">저장</button>
+        <button type="button" class="btn btn-light" onclick="closeModal()">취소</button>
+        <button type="button" class="btn btn-primary" onclick="saveChanges()">저장</button>
       </div>
     </div>
   </div>
@@ -323,7 +539,7 @@
     <div class="modal-content">
       <div class="modal-header">
         수정 이력
-        <button class="modal-close" onclick="closeHistoryModal()">&times;</button>
+        <button type="button" class="modal-close" onclick="closeHistoryModal()">&times;</button>
       </div>
 
       <div id="historyContent" class="modal-body">
@@ -331,7 +547,7 @@
       </div>
 
       <div class="modal-buttons">
-        <button class="btn btn-light" onclick="closeHistoryModal()">닫기</button>
+        <button type="button" class="btn btn-light" onclick="closeHistoryModal()">닫기</button>
       </div>
     </div>
   </div>
@@ -357,17 +573,17 @@
 
     // 카테고리 계층 구조 (CSV 데이터 기반)
     const CATEGORY_HIERARCHY = {
-      "A": { name: "회원", medium: { "10": { name: "가입/탈퇴", small: {"1": "회원 가입", "2": "회원 탈퇴"} }, "20": { name: "로그인/로그아웃", small: {} }, "30": { name: "개인정보변경", small: {} }, "40": { name: "마케팅 수신 설정", small: {} }, "99": { name: "기타 회원 관련", small: {} } } },
-      "B": { name: "제품", medium: { "10": { name: "제품 기본 정보", small: {"1": "제품 기본 정보", "2": "제품 성분", "3": "제품 함량/용량", "4": "제품 기능/효과", "5": "제품 유통 기한", "6": "제품 보관 방법", "7": "제품 제형", "99": "기타 제품 정보 관련"} }, "20": { name: "섭취 안내", small: {"1": "제품 섭취 대상(섭취 전)", "2": "제품 섭취 방법", "3": "제품 알레르기/주의사항(섭취 전)", "99": "기타 섭취 관련"} }, "30": { name: "섭취 후 증상/반응", small: {"1": "소화기 증상", "99": "기타 섭취 후 반응"} }, "40": { name: "상품 추천/비교", small: {"1": "연령별 상품 추천", "2": "증상별 상품 추천", "3": "목적별 상품 추천", "4": "성분별 상품 추천", "50": "상품 비교", "99": "기타 추천 관련"} }, "99": { name: "기타 제품 관련", small: {} } } },
+      "A": { name: "회원", medium: { "10": { name: "가입/탈퇴", small: { "1": "회원 가입", "2": "회원 탈퇴" } }, "20": { name: "로그인/로그아웃", small: {} }, "30": { name: "개인정보변경", small: {} }, "40": { name: "마케팅 수신 설정", small: {} }, "99": { name: "기타 회원 관련", small: {} } } },
+      "B": { name: "제품", medium: { "10": { name: "제품 기본 정보", small: { "1": "제품 기본 정보", "2": "제품 성분", "3": "제품 함량/용량", "4": "제품 기능/효과", "5": "제품 유통 기한", "6": "제품 보관 방법", "7": "제품 제형", "99": "기타 제품 정보 관련" } }, "20": { name: "섭취 안내", small: { "1": "제품 섭취 대상(섭취 전)", "2": "제품 섭취 방법", "3": "제품 알레르기/주의사항(섭취 전)", "99": "기타 섭취 관련" } }, "30": { name: "섭취 후 증상/반응", small: { "1": "소화기 증상", "99": "기타 섭취 후 반응" } }, "40": { name: "상품 추천/비교", small: { "1": "연령별 상품 추천", "2": "증상별 상품 추천", "3": "목적별 상품 추천", "4": "성분별 상품 추천", "50": "상품 비교", "99": "기타 추천 관련" } }, "99": { name: "기타 제품 관련", small: {} } } },
       "C": { name: "제품 불량/품질 이슈", medium: { "10": { name: "제품 품질 이상(변질)", small: {} }, "20": { name: "제품 내 이물질", small: {} }, "30": { name: "제품 제조 불량", small: {} }, "99": { name: "기타 제품 불량/품질 이슈", small: {} } } },
       "D": { name: "구매", medium: { "10": { name: "온라인/오프라인 구매", small: {} }, "20": { name: "재고/품절", small: {} }, "99": { name: "기타 구매 관련", small: {} } } },
       "E": { name: "결제", medium: { "10": { name: "결제 수단 변경", small: {} }, "20": { name: "지출 증빙", small: {} }, "30": { name: "일반 결제 오류", small: {} }, "99": { name: "기타 일반 결제 관련", small: {} } } },
       "F": { name: "주문 관리", medium: { "10": { name: "주문 조회", small: {} }, "20": { name: "주문 취소(결제 전)", small: {} }, "30": { name: "결제 취소(결제 후, 배송 전)", small: {} }, "40": { name: "반품/교환(배송 완료 후)", small: {} }, "99": { name: "기타 주문 관련", small: {} } } },
       "G": { name: "일반 배송", medium: { "10": { name: "배송 정책", small: {} }, "20": { name: "배송 조회/추적", small: {} }, "30": { name: "배송 주소/메시지 변경", small: {} }, "40": { name: "배송 지연", small: {} }, "50": { name: "배송 파손/손상(배송 중 원인 관련)", small: {} }, "60": { name: "배송 누락", small: {} }, "99": { name: "기타 배송 관련", small: {} } } },
-      "H": { name: "정기 구독(또박배송)", medium: { "10": { name: "구독 혜택/신청", small: {"1": "구독 혜택", "2": "구독 신청", "99": "기타 구독 혜택/신청 관련"} }, "20": { name: "구독 정책", small: {} }, "30": { name: "구독 변경", small: {"1": "구독 건너뛰기", "2": "구독 상품 변경", "99": "기타 구독 변경 관련"} }, "40": { name: "구독 결제", small: {"1": "구독 결제 수단 변경", "2": "구독 결제일 변경", "3": "구독 결제 취소", "4": "구독 결제 오류", "99": "기타 구독 결제 관련"} }, "50": { name: "구독 배송", small: {"1": "구독 배송 정책", "2": "구독 배송 조회/추적", "3": "구독 배송 주소/메시지 변경", "4": "구독 배송 지연", "5": "구독 배송 파손/손상(배송 중 원인 관련)", "6": "구독 배송 누락", "7": "합 배송 관련", "99": "기타 구독 배송 관련"} }, "90": { name: "구독 해지", small: {"1": "구독 해지 정책", "2": "구독 해지 위약금", "99": "기타 구독 해지 관련 문의"} }, "99": { name: "기타 정기 구독 관련", small: {} } } },
+      "H": { name: "정기 구독(또박배송)", medium: { "10": { name: "구독 혜택/신청", small: { "1": "구독 혜택", "2": "구독 신청", "99": "기타 구독 혜택/신청 관련" } }, "20": { name: "구독 정책", small: {} }, "30": { name: "구독 변경", small: { "1": "구독 건너뛰기", "2": "구독 상품 변경", "99": "기타 구독 변경 관련" } }, "40": { name: "구독 결제", small: { "1": "구독 결제 수단 변경", "2": "구독 결제일 변경", "3": "구독 결제 취소", "4": "구독 결제 오류", "99": "기타 구독 결제 관련" } }, "50": { name: "구독 배송", small: { "1": "구독 배송 정책", "2": "구독 배송 조회/추적", "3": "구독 배송 주소/메시지 변경", "4": "구독 배송 지연", "5": "구독 배송 파손/손상(배송 중 원인 관련)", "6": "구독 배송 누락", "7": "합 배송 관련", "99": "기타 구독 배송 관련" } }, "90": { name: "구독 해지", small: { "1": "구독 해지 정책", "2": "구독 해지 위약금", "99": "기타 구독 해지 관련 문의" } }, "99": { name: "기타 정기 구독 관련", small: {} } } },
       "I": { name: "멤버십/리워드 혜택", medium: { "10": { name: "가입 혜택(가입 전)", small: {} }, "20": { name: "멤버십 혜택(가입 후)", small: {} }, "30": { name: "포인트/적립금", small: {} }, "40": { name: "쿠폰", small: {} }, "50": { name: "포인트 교환/응모", small: {} }, "99": { name: "기타 멤버십/혜택 관련", small: {} } } },
       "J": { name: "이벤트(프로모션)/사은품", medium: { "10": { name: "이벤트/프로모션 문의", small: {} }, "20": { name: "사은품 문의", small: {} }, "99": { name: "기타 이벤트/프로모션/사은품 관련", small: {} } } },
-      "K": { name: "홈페이지/앱", medium: { "10": { name: "서비스 기능", small: {"1": "섭취 알림 기능(앱)", "2": "영양제 분석/설계 기능(앱)", "3": "포인트 교환소 기능(앱)", "4": "구매 후기/리뷰", "5": "AI챗봇", "99": "기타 서비스 기능"} }, "20": { name: "정책/약관", small: {} }, "99": { name: "기타 홈페이지 웹/앱 관련", small: {} } } },
+      "K": { name: "홈페이지/앱", medium: { "10": { name: "서비스 기능", small: { "1": "섭취 알림 기능(앱)", "2": "영양제 분석/설계 기능(앱)", "3": "포인트 교환소 기능(앱)", "4": "구매 후기/리뷰", "5": "AI챗봇", "99": "기타 서비스 기능" } }, "20": { name: "정책/약관", small: {} }, "99": { name: "기타 홈페이지 웹/앱 관련", small: {} } } },
       "L": { name: "시스템 오류", medium: { "99": { name: "기타 시스템 오류/버그 관련", small: {} } } },
       "M": { name: "피드백/제안", medium: { "10": { name: "개선 의견", small: {} }, "20": { name: "불만", small: {} }, "30": { name: "칭찬", small: {} }, "99": { name: "기타 피드백/제안 관련", small: {} } } },
       "N": { name: "고객센터", medium: { "10": { name: "상담 요청/취소", small: {} }, "99": { name: "기타 고객센터 관련", small: {} } } },
@@ -1003,17 +1219,17 @@
     function renderStatusBadge(status) {
       if (!status) return '-';
       const badgeClass = status === 'OPEN' ? 'badge-open' :
-                         status === 'IN_PROGRESS' ? 'badge-in-progress' :
-                         status === 'CLOSED' ? 'badge-closed' : '';
+        status === 'IN_PROGRESS' ? 'badge-in-progress' :
+          status === 'CLOSED' ? 'badge-closed' : '';
       return `<span class="badge ${badgeClass}">${status}</span>`;
     }
 
     function renderPriorityBadge(priority) {
       if (!priority) return '-';
       const badgeClass = priority === 'LOW' ? 'badge-low' :
-                         priority === 'MEDIUM' ? 'badge-medium' :
-                         priority === 'HIGH' ? 'badge-high' :
-                         priority === 'URGENT' ? 'badge-urgent' : '';
+        priority === 'MEDIUM' ? 'badge-medium' :
+          priority === 'HIGH' ? 'badge-high' :
+            priority === 'URGENT' ? 'badge-urgent' : '';
       return `<span class="badge ${badgeClass}">${priority}</span>`;
     }
 
@@ -1026,7 +1242,7 @@
       const lastEntry = memoHist[memoHist.length - 1];
       const lastUser = lastEntry.created_by || 'Unknown';
 
-      return `<button class="btn btn-sm btn-light" onclick="event.stopPropagation(); openHistoryModal(${dataIndex})">
+      return `<button type="button" class="btn btn-sm btn-light" onclick="event.stopPropagation(); openHistoryModal(${dataIndex})">
         ${count}건 (${lastUser})
       </button>`;
     }
@@ -1334,4 +1550,5 @@
     window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
+
 </html>

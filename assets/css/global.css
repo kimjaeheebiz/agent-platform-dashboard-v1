@@ -14,6 +14,7 @@
   /* Body */
   --body-bg: #f4f5fa;
   --body-color: #121212;
+  --iframe-bg: #f0f2f4;
 
   /* Text */
   --text-primary: #121212;
@@ -59,7 +60,9 @@
 
   /* Radius */
   --radius: 8px;
+  /* --radius: 4px; */
   --radius-sm: 4px;
+  --radius-lg: 12px;
   
   /* Shadow */
   --shadow-card: 0 3px 6px rgba(46, 38, 61, 0.2);
@@ -67,6 +70,7 @@
   
   /* Layout */
   --section-padding: 20px;
+  --section-padding-xxs: 4px;
   --section-padding-xs: 8px;
   --section-padding-sm: 12px;
   --section-padding-md: 16px;
@@ -77,7 +81,7 @@
   --table-cell-height: 39px;
   --table-cell-height-sm: 33px;
   --btn-height: 36px;
-  --btn-height-sm: 30px;
+  --btn-height-sm: 28px;
 }
 
 * {
@@ -89,9 +93,6 @@ body, label, input, button, select, textarea, table {
   font-family: 'Pretendard Variable', sans-serif;
   font-size: 13px;
   color: var(--body-color);
-}
-label {
-  font-weight: 500;
 }
 h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
@@ -111,11 +112,11 @@ select {
 }
 input,
 textarea {
-  padding: 4px 10px;
+  padding: 6px 10px;
   min-height: var(--btn-height);
 }
 select {
-  padding: 4px 24px 4px 10px;
+  padding: 6px 24px 6px 10px;
   min-height: var(--btn-height);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23616161'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -147,6 +148,13 @@ select[readonly] {
   color: var(--text-secondary);
   opacity: 1;
   cursor: default;
+}
+label {
+  font-weight: 500;
+}
+.label-sm {
+  font-size: 12px;
+  color: var(--text-secondary);
 }
 button {
   cursor: pointer;
@@ -192,7 +200,12 @@ td.ellipsis {
 body {
   min-width: 1280px;
   background: var(--body-bg);
-  line-height: 1.5;
+  line-height: 1.4;
+}
+iframe {
+  width: 100%;
+  border: none;
+  background: var(--body-bg);
 }
 .container {
   max-width: 1920px;
@@ -252,9 +265,8 @@ body {
   background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
-  color: var(--text-secondary);
   transition: all 0.2s;
 }
 .tab-btn:hover {
@@ -263,7 +275,7 @@ body {
 .tab-btn.active {
   border-bottom-color: var(--primary);
   color: var(--primary);
-  font-weight: 600;
+  font-weight: 700;
 }
 .tab-content {
   display: none;
@@ -282,7 +294,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 10px;
+  padding: 6px 10px;
   height: var(--btn-height);
   background-color: transparent;
   border: 1px solid var(--border-dark);
@@ -292,6 +304,8 @@ body {
 }
 .btn:hover {
   background-color: var(--surface-hover);
+  border-color: var(--border-dark);
+  color: var(--text-primary);
 }
 .btn:disabled {
   background-color: var(--disabled-bg);
@@ -316,6 +330,25 @@ body {
   background-color: var(--dark-hover);
   border-color: var(--dark-hover);
 }
+.btn-success {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: var(--surface);
+}
+.btn-outline-success {
+  background-color: transparent;
+  border-color: var(--success);
+  color: var(--success);
+}
+.btn-outline-success:hover {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: var(--surface);
+}
+.btn-success:hover {
+  background-color: var(--dark-hover);
+  border-color: var(--success-hover);
+}
 .btn-white {
   background-color: #fff;
   border-color: #fff;
@@ -336,6 +369,19 @@ body {
 .btn-sm {
   height: var(--btn-height-sm);
 }
+.btn-icon {
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.2;
+}
+.btn-icon:hover {
+  background-color: var(--surface-hover);
+  border-color: var(--border-dark);
+  color: var(--text-primary);
+}
 
 /* 버튼 영역 */
 .btn-area {
@@ -349,14 +395,14 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 8px;
-  height: 22px;
+  padding: 3px 8px;
+  min-height: 22px;
   border-radius: 12px;
   background: var(--surface-disabled);
   color: var(--text-secondary);
   font-size: 12px;
   font-weight: 500;
-  line-height: 1;
+  line-height: 1.2;
 }
 .badge-open {
   background: var(--info-bg);
@@ -391,23 +437,32 @@ body {
   color: var(--surface);
 }
 
+/* 카드 */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.card-body {
+  padding: var(--section-padding);
+}
+
 /* ========================================
   필터 영역
   ======================================== */
 .filter-section {
-  background: var(--surface);
   padding-top: var(--section-padding);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-card);
 }
 .filter-section .btn-area {
   margin-top: var(--section-padding);
   padding: var(--section-padding-sm) var(--section-padding);
-  justify-content: center;
+  justify-content: space-between;
   border-top: 1px solid var(--border);
 }
 .filter-section .btn-area .btn {
-  min-width: 80px;
+  min-width: 90px;
 }
 .filter-section .filter-title {
   font-size: 16px;
@@ -425,17 +480,19 @@ body {
 .filter-section .filter-controls + .filter-controls {
   margin-top: var(--section-padding-xs);
 }
-.filter-section .filter-group {
+.filter-group {
   display: flex;
   align-items: center;
   gap: 6px;
+}
+.filter-section .filter-controls .filter-group {
   width: calc((100% - 240px) / 4);
   min-width: 300px;
 }
-.filter-section .filter-group label {
+.filter-section .filter-controls .filter-group label {
   min-width: 84px;
 }
-.filter-section .filter-group label + * {
+.filter-section .filter-controls .filter-group label + * {
   flex: 1;
   min-width: 0;
   max-width: 100%;
@@ -469,46 +526,33 @@ body {
 /* ========================================
   대시보드 패널
   ======================================== */
-.dashboard-container {
-  background: var(--surface);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-card);
-  margin-bottom: 20px;
-  overflow: hidden;
+.dashboard-container.card {
+  background: var(--iframe-bg);
 }
-
-.dashboard-panel {
-  display: none;
-}
-
-.dashboard-panel.active {
-  display: block;
-}
-
-.dashboard-panel iframe {
+.dashboard-container iframe {
   width: 100%;
   height: 900px;
   border: none;
+}
+.dashboard-panel {
+  display: none;
+}
+.dashboard-panel.active {
+  display: block;
 }
 
 /* ========================================
   데이터 목록
   ======================================== */
-.grid-section {
-  background: var(--surface);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-card);
-  overflow: hidden;
-}
 .grid-header {
   padding: var(--section-padding-xs) var(--section-padding);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-height: calc(var(--btn-height) + var(--section-padding-xs) * 2);
 }
 .grid-header h2 {
   font-size: 16px;
-  line-height: var(--btn-height-sm);
   color: var(--text-primary);
 }
 .grid-header h2 span {
@@ -564,7 +608,7 @@ body {
   gap: 15px;
 }
 .pagination button {
-  min-height: var(--btn-height);
+  min-height: var(--btn-height-sm);
   border: none;
   background: none;
 }
@@ -632,11 +676,10 @@ body {
 .modal-buttons .btn-primary {
   min-width: 80px;
 }
-.modal-body > *:last-child {
-  margin-bottom: 0;
-}
-.modal-field {
-  margin-bottom: var(--section-padding-md);
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-padding);
 }
 .modal-field label {
   display: block;
@@ -653,7 +696,7 @@ body {
   width: 100%;
 }
 .modal-field textarea {
-  min-height: 90px;
+  min-height: 100px;
   resize: vertical;
 }
 .modal-header .modal-close {
@@ -668,6 +711,83 @@ body {
 }
 .modal-header .modal-close:hover {
   color: var(--text-primary);
+}
+
+/* 카테고리 */
+.modal-field .category-list {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-hover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+}
+.modal-field .category-list .category-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--section-padding-xs) var(--section-padding-sm);
+}
+.modal-field .category-list .category-item:not(:last-child) {
+  border-bottom: 1px dashed var(--border-dark);
+}
+.modal-field .category-list .category-item .title {
+  width: 100px;
+  font-weight: 500;
+}
+.modal-field .category-list .category-item .content {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+}
+.modal-field .category-list .category-item .content .form-group {
+  flex: 1;
+}
+
+/* 대화 원문(AI 채팅 UI) */
+.chat-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-padding-xs);
+  padding: var(--section-padding-md);
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.chat-bubble {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-padding-xxs);
+  max-width: 85%;
+}
+.chat-bubble-label {
+  padding-left: var(--section-padding-xxs);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text-disabled);
+}
+.chat-bubble-content {
+  padding: var(--section-padding-sm) var(--section-padding-md);
+  border-radius: var(--radius-lg);
+}
+.chat-bubble.user {
+  align-self: flex-end;
+}
+.chat-bubble.user .chat-bubble-content {
+  background: var(--info);
+  color: var(--surface);
+}
+.chat-bubble.user .chat-bubble-label {
+  text-align: right;
+}
+.chat-bubble.assistant .chat-bubble-content {
+  background: var(--info-bg);
+}
+.chat-bubble-content {
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 /* ========================================
@@ -758,4 +878,32 @@ body {
   padding: var(--section-padding-md);
   color: var(--text-disabled);
   text-align: center;
+}
+.d-none {
+  display: none;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--section-padding-md);
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--section-padding-md);
+}
+.grid-4 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: var(--section-padding-md);
+}
+.sr-only {
+  font-size: 0;
+  height: 1px;
+  width: 1px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
 }
