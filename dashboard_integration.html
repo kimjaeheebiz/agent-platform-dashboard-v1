@@ -43,18 +43,200 @@
         <div class="filter-controls">
           <div class="filter-group">
             <label>시작일</label>
-            <input type="datetime-local" id="dateFrom" value="2025-12-01T00:00">
+            <input type="datetime-local" id="dateFrom" value="2025-12-01T00:00" class="d-none"> <!-- 기존 소스 숨김 처리 -->
+            <div class="form-control-group">
+              <input type="date" id="dateFrom_date" class="form-control-date">
+              <select id="dateFrom_hour" class="form-control-time">
+                <option value="00" selected>00시</option>
+                <option value="01">01시</option>
+                <option value="02">02시</option>
+                <option value="03">03시</option>
+                <option value="04">04시</option>
+                <option value="05">05시</option>
+                <option value="06">06시</option>
+                <option value="07">07시</option>
+                <option value="08">08시</option>
+                <option value="09">09시</option>
+                <option value="10">10시</option>
+                <option value="11">11시</option>
+                <option value="12">12시</option>
+                <option value="13">13시</option>
+                <option value="14">14시</option>
+                <option value="15">15시</option>
+                <option value="16">16시</option>
+                <option value="17">17시</option>
+                <option value="18">18시</option>
+                <option value="19">19시</option>
+                <option value="20">20시</option>
+                <option value="21">21시</option>
+                <option value="22">22시</option>
+                <option value="23">23시</option>
+              </select>
+              <select id="dateFrom_minute" class="form-control-time">
+                <option value="00" selected>00분</option>
+                <option value="01">01분</option>
+                <option value="02">02분</option>
+                <option value="03">03분</option>
+                <option value="04">04분</option>
+                <option value="05">05분</option>
+                <option value="06">06분</option>
+                <option value="07">07분</option>
+                <option value="08">08분</option>
+                <option value="09">09분</option>
+                <option value="10">10분</option>
+                <option value="11">11분</option>
+                <option value="12">12분</option>
+                <option value="13">13분</option>
+                <option value="14">14분</option>
+                <option value="15">15분</option>
+                <option value="16">16분</option>
+                <option value="17">17분</option>
+                <option value="18">18분</option>
+                <option value="19">19분</option>
+                <option value="20">20분</option>
+                <option value="21">21분</option>
+                <option value="22">22분</option>
+                <option value="23">23분</option>
+                <option value="24">24분</option>
+                <option value="25">25분</option>
+                <option value="26">26분</option>
+                <option value="27">27분</option>
+                <option value="28">28분</option>
+                <option value="29">29분</option>
+                <option value="30">30분</option>
+                <option value="31">31분</option>
+                <option value="32">32분</option>
+                <option value="33">33분</option>
+                <option value="34">34분</option>
+                <option value="35">35분</option>
+                <option value="36">36분</option>
+                <option value="37">37분</option>
+                <option value="38">38분</option>
+                <option value="39">39분</option>
+                <option value="40">40분</option>
+                <option value="41">41분</option>
+                <option value="42">42분</option>
+                <option value="43">43분</option>
+                <option value="44">44분</option>
+                <option value="45">45분</option>
+                <option value="46">46분</option>
+                <option value="47">47분</option>
+                <option value="48">48분</option>
+                <option value="49">49분</option>
+                <option value="50">50분</option>
+                <option value="51">51분</option>
+                <option value="52">52분</option>
+                <option value="53">53분</option>
+                <option value="54">54분</option>
+                <option value="55">55분</option>
+                <option value="56">56분</option>
+                <option value="57">57분</option>
+                <option value="58">58분</option>
+                <option value="59">59분</option>
+              </select>
+            </div>
           </div>
           <div class="filter-group">
             <label>종료일</label>
-            <input type="datetime-local" id="dateTo" value="2025-12-31T23:59">
+            <input type="datetime-local" id="dateTo" value="2025-12-31T23:59" class="d-none"> <!-- 기존 소스 숨김 처리 -->
+            <div class="form-control-group">
+              <input type="date" id="dateTo_date" class="form-control-date">
+              <select id="dateTo_hour" class="form-control-time">
+                <option value="00">00시</option>
+                <option value="01">01시</option>
+                <option value="02">02시</option>
+                <option value="03">03시</option>
+                <option value="04">04시</option>
+                <option value="05">05시</option>
+                <option value="06">06시</option>
+                <option value="07">07시</option>
+                <option value="08">08시</option>
+                <option value="09">09시</option>
+                <option value="10">10시</option>
+                <option value="11">11시</option>
+                <option value="12">12시</option>
+                <option value="13">13시</option>
+                <option value="14">14시</option>
+                <option value="15">15시</option>
+                <option value="16">16시</option>
+                <option value="17">17시</option>
+                <option value="18">18시</option>
+                <option value="19">19시</option>
+                <option value="20">20시</option>
+                <option value="21">21시</option>
+                <option value="22">22시</option>
+                <option value="23" selected>23시</option>
+              </select>
+              <select id="dateTo_minute" class="form-control-time">
+                <option value="00">00분</option>
+                <option value="01">01분</option>
+                <option value="02">02분</option>
+                <option value="03">03분</option>
+                <option value="04">04분</option>
+                <option value="05">05분</option>
+                <option value="06">06분</option>
+                <option value="07">07분</option>
+                <option value="08">08분</option>
+                <option value="09">09분</option>
+                <option value="10">10분</option>
+                <option value="11">11분</option>
+                <option value="12">12분</option>
+                <option value="13">13분</option>
+                <option value="14">14분</option>
+                <option value="15">15분</option>
+                <option value="16">16분</option>
+                <option value="17">17분</option>
+                <option value="18">18분</option>
+                <option value="19">19분</option>
+                <option value="20">20분</option>
+                <option value="21">21분</option>
+                <option value="22">22분</option>
+                <option value="23">23분</option>
+                <option value="24">24분</option>
+                <option value="25">25분</option>
+                <option value="26">26분</option>
+                <option value="27">27분</option>
+                <option value="28">28분</option>
+                <option value="29">29분</option>
+                <option value="30">30분</option>
+                <option value="31">31분</option>
+                <option value="32">32분</option>
+                <option value="33">33분</option>
+                <option value="34">34분</option>
+                <option value="35">35분</option>
+                <option value="36">36분</option>
+                <option value="37">37분</option>
+                <option value="38">38분</option>
+                <option value="39">39분</option>
+                <option value="40">40분</option>
+                <option value="41">41분</option>
+                <option value="42">42분</option>
+                <option value="43">43분</option>
+                <option value="44">44분</option>
+                <option value="45">45분</option>
+                <option value="46">46분</option>
+                <option value="47">47분</option>
+                <option value="48">48분</option>
+                <option value="49">49분</option>
+                <option value="50">50분</option>
+                <option value="51">51분</option>
+                <option value="52">52분</option>
+                <option value="53">53분</option>
+                <option value="54">54분</option>
+                <option value="55">55분</option>
+                <option value="56">56분</option>
+                <option value="57">57분</option>
+                <option value="58">58분</option>
+                <option value="59" selected>59분</option>
+              </select>
+            </div>
           </div>
         </div>
         <div class="btn-area">
           <button type="button" class="btn btn-primary" onclick="applyFilters()">조회</button>
           <div class="filter-group">
             <label>조회 결과 다운로드</label>
-            <select id="tableDownloadSelect">
+            <select id="tableDownloadSelect" style="min-width: 220px;">
               <option value="">다운로드할 테이블 선택</option>
               <option value="hourly_pivot">시간대별 문의 건수 (테이블)</option>
               <option value="daily_grid">일자별 대화 및 문의 건수 (테이블)</option>
@@ -95,18 +277,200 @@
         <div class="filter-controls">
           <div class="filter-group">
             <label>시작일</label>
-            <input type="datetime-local" id="dateFrom2" value="2025-12-01T00:00">
+            <input type="datetime-local" id="dateFrom2" value="2025-12-01T00:00" class="d-none"> <!-- 기존 소스 숨김 처리 -->
+            <div class="form-control-group">
+              <input type="date" id="dateFrom_date" class="form-control-date">
+              <select id="dateFrom_hour" class="form-control-time">
+                <option value="00" selected>00시</option>
+                <option value="01">01시</option>
+                <option value="02">02시</option>
+                <option value="03">03시</option>
+                <option value="04">04시</option>
+                <option value="05">05시</option>
+                <option value="06">06시</option>
+                <option value="07">07시</option>
+                <option value="08">08시</option>
+                <option value="09">09시</option>
+                <option value="10">10시</option>
+                <option value="11">11시</option>
+                <option value="12">12시</option>
+                <option value="13">13시</option>
+                <option value="14">14시</option>
+                <option value="15">15시</option>
+                <option value="16">16시</option>
+                <option value="17">17시</option>
+                <option value="18">18시</option>
+                <option value="19">19시</option>
+                <option value="20">20시</option>
+                <option value="21">21시</option>
+                <option value="22">22시</option>
+                <option value="23">23시</option>
+              </select>
+              <select id="dateFrom_minute" class="form-control-time">
+                <option value="00" selected>00분</option>
+                <option value="01">01분</option>
+                <option value="02">02분</option>
+                <option value="03">03분</option>
+                <option value="04">04분</option>
+                <option value="05">05분</option>
+                <option value="06">06분</option>
+                <option value="07">07분</option>
+                <option value="08">08분</option>
+                <option value="09">09분</option>
+                <option value="10">10분</option>
+                <option value="11">11분</option>
+                <option value="12">12분</option>
+                <option value="13">13분</option>
+                <option value="14">14분</option>
+                <option value="15">15분</option>
+                <option value="16">16분</option>
+                <option value="17">17분</option>
+                <option value="18">18분</option>
+                <option value="19">19분</option>
+                <option value="20">20분</option>
+                <option value="21">21분</option>
+                <option value="22">22분</option>
+                <option value="23">23분</option>
+                <option value="24">24분</option>
+                <option value="25">25분</option>
+                <option value="26">26분</option>
+                <option value="27">27분</option>
+                <option value="28">28분</option>
+                <option value="29">29분</option>
+                <option value="30">30분</option>
+                <option value="31">31분</option>
+                <option value="32">32분</option>
+                <option value="33">33분</option>
+                <option value="34">34분</option>
+                <option value="35">35분</option>
+                <option value="36">36분</option>
+                <option value="37">37분</option>
+                <option value="38">38분</option>
+                <option value="39">39분</option>
+                <option value="40">40분</option>
+                <option value="41">41분</option>
+                <option value="42">42분</option>
+                <option value="43">43분</option>
+                <option value="44">44분</option>
+                <option value="45">45분</option>
+                <option value="46">46분</option>
+                <option value="47">47분</option>
+                <option value="48">48분</option>
+                <option value="49">49분</option>
+                <option value="50">50분</option>
+                <option value="51">51분</option>
+                <option value="52">52분</option>
+                <option value="53">53분</option>
+                <option value="54">54분</option>
+                <option value="55">55분</option>
+                <option value="56">56분</option>
+                <option value="57">57분</option>
+                <option value="58">58분</option>
+                <option value="59">59분</option>
+              </select>
+            </div>
           </div>
           <div class="filter-group">
             <label>종료일</label>
-            <input type="datetime-local" id="dateTo2" value="2025-12-31T23:59">
+            <input type="datetime-local" id="dateTo2" value="2025-12-31T23:59" class="d-none"> <!-- 기존 소스 숨김 처리 -->
+            <div class="form-control-group">
+              <input type="date" id="dateTo_date" class="form-control-date">
+              <select id="dateTo_hour" class="form-control-time">
+                <option value="00">00시</option>
+                <option value="01">01시</option>
+                <option value="02">02시</option>
+                <option value="03">03시</option>
+                <option value="04">04시</option>
+                <option value="05">05시</option>
+                <option value="06">06시</option>
+                <option value="07">07시</option>
+                <option value="08">08시</option>
+                <option value="09">09시</option>
+                <option value="10">10시</option>
+                <option value="11">11시</option>
+                <option value="12">12시</option>
+                <option value="13">13시</option>
+                <option value="14">14시</option>
+                <option value="15">15시</option>
+                <option value="16">16시</option>
+                <option value="17">17시</option>
+                <option value="18">18시</option>
+                <option value="19">19시</option>
+                <option value="20">20시</option>
+                <option value="21">21시</option>
+                <option value="22">22시</option>
+                <option value="23" selected>23시</option>
+              </select>
+              <select id="dateTo_minute" class="form-control-time">
+                <option value="00">00분</option>
+                <option value="01">01분</option>
+                <option value="02">02분</option>
+                <option value="03">03분</option>
+                <option value="04">04분</option>
+                <option value="05">05분</option>
+                <option value="06">06분</option>
+                <option value="07">07분</option>
+                <option value="08">08분</option>
+                <option value="09">09분</option>
+                <option value="10">10분</option>
+                <option value="11">11분</option>
+                <option value="12">12분</option>
+                <option value="13">13분</option>
+                <option value="14">14분</option>
+                <option value="15">15분</option>
+                <option value="16">16분</option>
+                <option value="17">17분</option>
+                <option value="18">18분</option>
+                <option value="19">19분</option>
+                <option value="20">20분</option>
+                <option value="21">21분</option>
+                <option value="22">22분</option>
+                <option value="23">23분</option>
+                <option value="24">24분</option>
+                <option value="25">25분</option>
+                <option value="26">26분</option>
+                <option value="27">27분</option>
+                <option value="28">28분</option>
+                <option value="29">29분</option>
+                <option value="30">30분</option>
+                <option value="31">31분</option>
+                <option value="32">32분</option>
+                <option value="33">33분</option>
+                <option value="34">34분</option>
+                <option value="35">35분</option>
+                <option value="36">36분</option>
+                <option value="37">37분</option>
+                <option value="38">38분</option>
+                <option value="39">39분</option>
+                <option value="40">40분</option>
+                <option value="41">41분</option>
+                <option value="42">42분</option>
+                <option value="43">43분</option>
+                <option value="44">44분</option>
+                <option value="45">45분</option>
+                <option value="46">46분</option>
+                <option value="47">47분</option>
+                <option value="48">48분</option>
+                <option value="49">49분</option>
+                <option value="50">50분</option>
+                <option value="51">51분</option>
+                <option value="52">52분</option>
+                <option value="53">53분</option>
+                <option value="54">54분</option>
+                <option value="55">55분</option>
+                <option value="56">56분</option>
+                <option value="57">57분</option>
+                <option value="58">58분</option>
+                <option value="59" selected>59분</option>
+              </select>
+            </div>
           </div>
         </div>
         <div class="btn-area">
           <button type="button" class="btn btn-primary" onclick="applyFilters()">조회</button>
           <div class="filter-group">
             <label>조회 결과 다운로드</label>
-            <select id="tableDownloadSelect">
+            <select id="tableDownloadSelect" style="min-width: 220px;">
               <option value="">다운로드할 테이블 선택</option>
               <option value="hourly_pivot">시간대별 문의 건수 (테이블)</option>
               <option value="daily_grid">일자별 대화 및 문의 건수 (테이블)</option>
@@ -147,11 +511,193 @@
         <div class="filter-controls">
           <div class="filter-group">
             <label>시작일</label>
-            <input type="datetime-local" id="dateFrom3" value="2025-12-01T00:00">
+            <input type="datetime-local" id="dateFrom3" value="2025-12-01T00:00" class="d-none"> <!-- 기존 소스 숨김 처리 -->
+            <div class="form-control-group">
+              <input type="date" id="dateFrom_date" class="form-control-date">
+              <select id="dateFrom_hour" class="form-control-time">
+                <option value="00" selected>00시</option>
+                <option value="01">01시</option>
+                <option value="02">02시</option>
+                <option value="03">03시</option>
+                <option value="04">04시</option>
+                <option value="05">05시</option>
+                <option value="06">06시</option>
+                <option value="07">07시</option>
+                <option value="08">08시</option>
+                <option value="09">09시</option>
+                <option value="10">10시</option>
+                <option value="11">11시</option>
+                <option value="12">12시</option>
+                <option value="13">13시</option>
+                <option value="14">14시</option>
+                <option value="15">15시</option>
+                <option value="16">16시</option>
+                <option value="17">17시</option>
+                <option value="18">18시</option>
+                <option value="19">19시</option>
+                <option value="20">20시</option>
+                <option value="21">21시</option>
+                <option value="22">22시</option>
+                <option value="23">23시</option>
+              </select>
+              <select id="dateFrom_minute" class="form-control-time">
+                <option value="00" selected>00분</option>
+                <option value="01">01분</option>
+                <option value="02">02분</option>
+                <option value="03">03분</option>
+                <option value="04">04분</option>
+                <option value="05">05분</option>
+                <option value="06">06분</option>
+                <option value="07">07분</option>
+                <option value="08">08분</option>
+                <option value="09">09분</option>
+                <option value="10">10분</option>
+                <option value="11">11분</option>
+                <option value="12">12분</option>
+                <option value="13">13분</option>
+                <option value="14">14분</option>
+                <option value="15">15분</option>
+                <option value="16">16분</option>
+                <option value="17">17분</option>
+                <option value="18">18분</option>
+                <option value="19">19분</option>
+                <option value="20">20분</option>
+                <option value="21">21분</option>
+                <option value="22">22분</option>
+                <option value="23">23분</option>
+                <option value="24">24분</option>
+                <option value="25">25분</option>
+                <option value="26">26분</option>
+                <option value="27">27분</option>
+                <option value="28">28분</option>
+                <option value="29">29분</option>
+                <option value="30">30분</option>
+                <option value="31">31분</option>
+                <option value="32">32분</option>
+                <option value="33">33분</option>
+                <option value="34">34분</option>
+                <option value="35">35분</option>
+                <option value="36">36분</option>
+                <option value="37">37분</option>
+                <option value="38">38분</option>
+                <option value="39">39분</option>
+                <option value="40">40분</option>
+                <option value="41">41분</option>
+                <option value="42">42분</option>
+                <option value="43">43분</option>
+                <option value="44">44분</option>
+                <option value="45">45분</option>
+                <option value="46">46분</option>
+                <option value="47">47분</option>
+                <option value="48">48분</option>
+                <option value="49">49분</option>
+                <option value="50">50분</option>
+                <option value="51">51분</option>
+                <option value="52">52분</option>
+                <option value="53">53분</option>
+                <option value="54">54분</option>
+                <option value="55">55분</option>
+                <option value="56">56분</option>
+                <option value="57">57분</option>
+                <option value="58">58분</option>
+                <option value="59">59분</option>
+              </select>
+            </div>
           </div>
           <div class="filter-group">
             <label>종료일</label>
-            <input type="datetime-local" id="dateTo3" value="2025-12-31T23:59">
+            <input type="datetime-local" id="dateTo3" value="2025-12-31T23:59" class="d-none"> <!-- 기존 소스 숨김 처리 -->
+            <div class="form-control-group">
+              <input type="date" id="dateTo_date" class="form-control-date">
+              <select id="dateTo_hour" class="form-control-time">
+                <option value="00">00시</option>
+                <option value="01">01시</option>
+                <option value="02">02시</option>
+                <option value="03">03시</option>
+                <option value="04">04시</option>
+                <option value="05">05시</option>
+                <option value="06">06시</option>
+                <option value="07">07시</option>
+                <option value="08">08시</option>
+                <option value="09">09시</option>
+                <option value="10">10시</option>
+                <option value="11">11시</option>
+                <option value="12">12시</option>
+                <option value="13">13시</option>
+                <option value="14">14시</option>
+                <option value="15">15시</option>
+                <option value="16">16시</option>
+                <option value="17">17시</option>
+                <option value="18">18시</option>
+                <option value="19">19시</option>
+                <option value="20">20시</option>
+                <option value="21">21시</option>
+                <option value="22">22시</option>
+                <option value="23" selected>23시</option>
+              </select>
+              <select id="dateTo_minute" class="form-control-time">
+                <option value="00">00분</option>
+                <option value="01">01분</option>
+                <option value="02">02분</option>
+                <option value="03">03분</option>
+                <option value="04">04분</option>
+                <option value="05">05분</option>
+                <option value="06">06분</option>
+                <option value="07">07분</option>
+                <option value="08">08분</option>
+                <option value="09">09분</option>
+                <option value="10">10분</option>
+                <option value="11">11분</option>
+                <option value="12">12분</option>
+                <option value="13">13분</option>
+                <option value="14">14분</option>
+                <option value="15">15분</option>
+                <option value="16">16분</option>
+                <option value="17">17분</option>
+                <option value="18">18분</option>
+                <option value="19">19분</option>
+                <option value="20">20분</option>
+                <option value="21">21분</option>
+                <option value="22">22분</option>
+                <option value="23">23분</option>
+                <option value="24">24분</option>
+                <option value="25">25분</option>
+                <option value="26">26분</option>
+                <option value="27">27분</option>
+                <option value="28">28분</option>
+                <option value="29">29분</option>
+                <option value="30">30분</option>
+                <option value="31">31분</option>
+                <option value="32">32분</option>
+                <option value="33">33분</option>
+                <option value="34">34분</option>
+                <option value="35">35분</option>
+                <option value="36">36분</option>
+                <option value="37">37분</option>
+                <option value="38">38분</option>
+                <option value="39">39분</option>
+                <option value="40">40분</option>
+                <option value="41">41분</option>
+                <option value="42">42분</option>
+                <option value="43">43분</option>
+                <option value="44">44분</option>
+                <option value="45">45분</option>
+                <option value="46">46분</option>
+                <option value="47">47분</option>
+                <option value="48">48분</option>
+                <option value="49">49분</option>
+                <option value="50">50분</option>
+                <option value="51">51분</option>
+                <option value="52">52분</option>
+                <option value="53">53분</option>
+                <option value="54">54분</option>
+                <option value="55">55분</option>
+                <option value="56">56분</option>
+                <option value="57">57분</option>
+                <option value="58">58분</option>
+                <option value="59" selected>59분</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -210,7 +756,7 @@
           </div>
           <div class="filter-group">
             <label>세션 ID</label>
-            <input type="text" id="" placeholder="검색어 입력">
+            <input type="text" id="sessionIdFilter" placeholder="세션 ID 입력">
           </div>
           <div class="filter-group">
             <label>사용자 요약</label>
@@ -241,6 +787,11 @@
       <div class="grid-section card">
         <div class="grid-header">
           <h2>데이터 목록 (<span id="totalCount">0</span>건)</h2>
+          <div class="btn-area">
+            <div class="badge badge-category">카테고리 테스트</div>
+            <button type="button" class="btn copy-btn" onclick="copyAllData()" title="복사">⧉</button>
+            <button type="button" class="btn copy-btn copied" onclick="copyAllData()" title="복사">✓</button>
+          </div>
         </div>
 
         <div class="loading" id="loadingIndicator">데이터를 불러오는 중...</div>
@@ -298,7 +849,7 @@
         </div>
 
         <div class="modal-field">
-          <label>카테고리 (대분류/중분류/소분류)</label>
+          <label>상담 카테고리 (대분류/중분류/소분류)</label>
           <div id="modal_categories_container" class="category-list">
             <div class="category-item">
               <div class="title">카테고리 #1</div>
